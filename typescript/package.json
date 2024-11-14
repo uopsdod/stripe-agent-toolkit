@@ -1,6 +1,6 @@
 {
   "name": "@stripe/agent-toolkit",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf langchain ai-sdk",
@@ -11,14 +11,14 @@
   },
   "exports": {
     "./langchain": {
-      "types": "./dist/langchain.d.ts",
-      "require": "./dist/langchain.js",
-      "import": "./dist/langchain.mjs"
+      "types": "./langchain.d.ts",
+      "require": "./langchain.js",
+      "import": "./langchain.mjs"
     },
     "./ai-sdk": {
-      "types": "./dist/ai-sdk.d.ts",
-      "require": "./dist/ai-sdk.js",
-      "import": "./dist/ai-sdk.mjs"
+      "types": "./ai-sdk.d.ts",
+      "require": "./ai-sdk.js",
+      "import": "./ai-sdk.mjs"
     }
   },
   "packageManager": "pnpm@9.11.0",
