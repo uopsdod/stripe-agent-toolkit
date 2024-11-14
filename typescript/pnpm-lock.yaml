@@ -76,8 +76,8 @@ importers:
         specifier: ^0.0.63
         version: 0.0.63(zod@3.23.8)
       '@stripe/agent-toolkit':
-        specifier: workspace:*
-        version: link:../..
+        specifier: latest
+        version: 0.1.16(openai@4.67.1(zod@3.23.8))(react@18.3.1)(sswr@2.1.0(svelte@4.2.19))(svelte@4.2.19)(vue@3.5.10(typescript@5.6.2))
       ai:
         specifier: ^3.4.7
         version: 3.4.7(openai@4.67.1(zod@3.23.8))(react@18.3.1)(sswr@2.1.0(svelte@4.2.19))(svelte@4.2.19)(vue@3.5.10(typescript@5.6.2))(zod@3.23.8)
@@ -98,8 +98,8 @@ importers:
         specifier: ^0.3.5
         version: 0.3.5(@langchain/core@0.3.6(openai@4.67.1(zod@3.23.8)))
       '@stripe/agent-toolkit':
-        specifier: workspace:*
-        version: link:../..
+        specifier: latest
+        version: 0.1.16(openai@4.67.1(zod@3.23.8))(react@18.3.1)(sswr@2.1.0(svelte@4.2.19))(svelte@4.2.19)(vue@3.5.10(typescript@5.6.2))
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
@@ -777,6 +777,10 @@ packages:
 
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
+
+  '@stripe/agent-toolkit@0.1.16':
+    resolution: {integrity: sha512-S4/hY1Jpg9tNhUDK55DhzuCl9tueXp78iUyKpzjeqLwJDeV1IKM92sxjH5uF5VRk7ZHiNkjJgMYwhWx7YJielA==}
+    engines: {node: '>=18'}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -3733,6 +3737,20 @@ snapshots:
   '@sinonjs/fake-timers@10.3.0':
     dependencies:
       '@sinonjs/commons': 3.0.1
+
+  '@stripe/agent-toolkit@0.1.16(openai@4.67.1(zod@3.23.8))(react@18.3.1)(sswr@2.1.0(svelte@4.2.19))(svelte@4.2.19)(vue@3.5.10(typescript@5.6.2))':
+    dependencies:
+      '@langchain/core': 0.3.6(openai@4.67.1(zod@3.23.8))
+      ai: 3.4.7(openai@4.67.1(zod@3.23.8))(react@18.3.1)(sswr@2.1.0(svelte@4.2.19))(svelte@4.2.19)(vue@3.5.10(typescript@5.6.2))(zod@3.23.8)
+      stripe: 17.0.0
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - openai
+      - react
+      - solid-js
+      - sswr
+      - svelte
+      - vue
 
   '@tsconfig/node10@1.0.11': {}
 
