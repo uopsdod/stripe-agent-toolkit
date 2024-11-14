@@ -3,7 +3,8 @@ from dotenv import load_dotenv
 
 from langchain import hub
 from langchain_openai import ChatOpenAI
-from langchain.agents import AgentExecutor, create_structured_chat_agent
+
+from langgraph.prebuilt import create_react_agent
 
 from stripe_agent_toolkit.langchain.toolkit import StripeAgentToolkit
 
@@ -33,19 +34,16 @@ stripe_agent_toolkit = StripeAgentToolkit(
 tools = []
 tools.extend(stripe_agent_toolkit.get_tools())
 
-prompt = hub.pull("hwchase17/structured-chat-agent")
-agent = create_structured_chat_agent(llm, tools, prompt)
+langgraph_agent_executor = create_react_agent(llm, tools)
 
-agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
+input_state = {
+    "messages": """
+        Create a payment link for a new product called 'test' with a price
+        of $100. Come up with a funny description about buy bots,
+        maybe a haiku.
+    """,
+}
 
-response = agent_executor.invoke(
-    {
-        "input": """
-            Create a payment link for a new product called 'test' with a price
-            of $100. Come up with a funny description about buy bots,
-            maybe a haiku.
-        """,
-    }
-)
+output_state = langgraph_agent_executor.invoke(input_state)
 
-print(response["output"])
+print(output_state["messages"][-1].content)
