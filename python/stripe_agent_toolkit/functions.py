@@ -161,13 +161,13 @@ def finalize_invoice(invoice: str):
     Returns:
         stripe.Invoice: The finalized invoice.
     """
-    invoice = stripe.Invoice.finalize_invoice(invoice=invoice)
+    invoice_object = stripe.Invoice.finalize_invoice(invoice=invoice)
 
     return {
-        "id": invoice.id,
-        "hosted_invoice_url": invoice.hosted_invoice_url,
-        "customer": invoice.customer,
-        "status": invoice.status,
+        "id": invoice_object.id,
+        "hosted_invoice_url": invoice_object.hosted_invoice_url,
+        "customer": invoice_object.customer,
+        "status": invoice_object.status,
     }
 
 

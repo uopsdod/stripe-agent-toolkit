@@ -40,7 +40,7 @@ export type Tool = {
 
 const tools: Tool[] = [
   {
-    method: 'createCustomer',
+    method: 'create_customer',
     name: 'Create Customer',
     description: createCustomerPrompt,
     parameters: createCustomerParameters,
@@ -51,7 +51,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'listCustomers',
+    method: 'list_customers',
     name: 'List Customers',
     description: listCustomersPrompt,
     parameters: listCustomersParameters,
@@ -62,7 +62,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'createProduct',
+    method: 'create_product',
     name: 'Create Product',
     description: createProductPrompt,
     parameters: createProductParameters,
@@ -73,7 +73,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'listProducts',
+    method: 'list_products',
     name: 'List Products',
     description: listProductsPrompt,
     parameters: listProductsParameters,
@@ -84,7 +84,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'createPrice',
+    method: 'create_price',
     name: 'Create Price',
     description: createPricePrompt,
     parameters: createPriceParameters,
@@ -95,7 +95,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'listPrices',
+    method: 'list_prices',
     name: 'List Prices',
     description: listPricesPrompt,
     parameters: listPricesParameters,
@@ -106,7 +106,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'createPaymentLink',
+    method: 'create_payment_link',
     name: 'Create Payment Link',
     description: createPaymentLinkPrompt,
     parameters: createPaymentLinkParameters,
@@ -117,7 +117,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'createInvoice',
+    method: 'create_invoice',
     name: 'Create Invoice',
     description: createInvoicePrompt,
     parameters: createInvoiceParameters,
@@ -128,7 +128,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'createInvoiceItem',
+    method: 'create_invoice_item',
     name: 'Create Invoice Item',
     description: createInvoiceItemPrompt,
     parameters: createInvoiceItemParameters,
@@ -139,7 +139,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'finalizeInvoice',
+    method: 'finalize_invoice',
     name: 'Finalize Invoice',
     description: finalizeInvoicePrompt,
     parameters: finalizeInvoiceParameters,
@@ -150,7 +150,7 @@ const tools: Tool[] = [
     },
   },
   {
-    method: 'retrieveBalance',
+    method: 'retrieve_balance',
     name: 'Retrieve Balance',
     description: retrieveBalancePrompt,
     parameters: retrieveBalanceParameters,

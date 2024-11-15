@@ -38,7 +38,7 @@ tools: List[Dict] = [
             "customers": {
                 "create": True,
             }
-        }
+        },
     },
     {
         "method": "list_customers",
@@ -49,7 +49,7 @@ tools: List[Dict] = [
             "customers": {
                 "read": True,
             }
-        }
+        },
     },
     {
         "method": "create_product",
@@ -60,7 +60,7 @@ tools: List[Dict] = [
             "products": {
                 "create": True,
             }
-        }
+        },
     },
     {
         "method": "list_products",
@@ -71,7 +71,7 @@ tools: List[Dict] = [
             "products": {
                 "read": True,
             }
-        }
+        },
     },
     {
         "method": "create_price",
@@ -82,7 +82,7 @@ tools: List[Dict] = [
             "prices": {
                 "create": True,
             }
-        }
+        },
     },
     {
         "method": "list_prices",
@@ -93,7 +93,7 @@ tools: List[Dict] = [
             "prices": {
                 "read": True,
             }
-        }
+        },
     },
     {
         "method": "create_payment_link",
@@ -104,7 +104,7 @@ tools: List[Dict] = [
             "payment_links": {
                 "create": True,
             }
-        }
+        },
     },
     {
         "method": "create_invoice",
@@ -115,7 +115,7 @@ tools: List[Dict] = [
             "invoices": {
                 "create": True,
             }
-        }
+        },
     },
     {
         "method": "create_invoice_item",
@@ -126,7 +126,7 @@ tools: List[Dict] = [
             "invoice_items": {
                 "create": True,
             }
-        }
+        },
     },
     {
         "method": "finalize_invoice",
@@ -137,7 +137,7 @@ tools: List[Dict] = [
             "invoices": {
                 "update": True,
             }
-        }
+        },
     },
     {
         "method": "retrieve_balance",
@@ -148,6 +148,6 @@ tools: List[Dict] = [
             "balance": {
                 "read": True,
             }
-        }
+        },
     },
 ]

@@ -18,7 +18,6 @@ class StripeTool extends StructuredTool {
   constructor(
     StripeAPI: StripeAPI,
     method: string,
-    name: string,
     description: string,
     schema: z.ZodObject<any, any, any, any, {[x: string]: any}>
   ) {
@@ -26,7 +25,7 @@ class StripeTool extends StructuredTool {
 
     this.stripeAPI = StripeAPI;
     this.method = method;
-    this.name = name;
+    this.name = method;
     this.description = description;
     this.schema = schema;
   }

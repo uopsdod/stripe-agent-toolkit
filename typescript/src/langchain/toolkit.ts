@@ -27,7 +27,6 @@ class StripeAgentToolkit implements BaseToolkit {
         new StripeTool(
           this._stripe,
           tool.method,
-          tool.name,
           tool.description,
           tool.parameters
         )

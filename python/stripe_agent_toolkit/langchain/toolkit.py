@@ -23,7 +23,7 @@ class StripeAgentToolkit:
 
         self._tools = [
             StripeTool(
-                name=tool["name"],
+                name=tool["method"],
                 description=tool["description"],
                 method=tool["method"],
                 stripe_api=stripe_api,
