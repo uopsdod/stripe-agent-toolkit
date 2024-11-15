@@ -20,7 +20,7 @@ class StripeAPI {
     const stripeClient = new Stripe(secretKey, {
       appInfo: {
         name: 'stripe-agent-toolkit-typescript',
-        version: '0.1.19',
+        version: '0.1.20',
         url: 'https://github.com/stripe/agent-toolkit',
       },
     });
