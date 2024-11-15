@@ -20,7 +20,7 @@ class StripeAPI {
     const stripeClient = new Stripe(secretKey, {
       appInfo: {
         name: 'stripe-agent-toolkit-typescript',
-        version: '0.1.20',
+        version: '0.1.21',
         url: 'https://github.com/stripe/agent-toolkit',
       },
     });
@@ -46,37 +46,37 @@ class StripeAPI {
   }
 
   async run(method: string, arg: any) {
-    if (method === 'createCustomer') {
+    if (method === 'create_customer') {
       const output = JSON.stringify(await createCustomer(this.stripe, arg));
       return output;
-    } else if (method === 'listCustomers') {
+    } else if (method === 'list_customers') {
       const output = JSON.stringify(await listCustomers(this.stripe, arg));
       return output;
-    } else if (method === 'createProduct') {
+    } else if (method === 'create_product') {
       const output = JSON.stringify(await createProduct(this.stripe, arg));
       return output;
-    } else if (method === 'listProducts') {
+    } else if (method === 'list_products') {
       const output = JSON.stringify(await listProducts(this.stripe, arg));
       return output;
-    } else if (method === 'createPrice') {
+    } else if (method === 'create_price') {
       const output = JSON.stringify(await createPrice(this.stripe, arg));
       return output;
-    } else if (method === 'listPrices') {
+    } else if (method === 'list_prices') {
       const output = JSON.stringify(await listPrices(this.stripe, arg));
       return output;
-    } else if (method === 'createPaymentLink') {
+    } else if (method === 'create_payment_link') {
       const output = JSON.stringify(await createPaymentLink(this.stripe, arg));
       return output;
-    } else if (method === 'createInvoice') {
+    } else if (method === 'create_invoice') {
       const output = JSON.stringify(await createInvoice(this.stripe, arg));
       return output;
-    } else if (method === 'createInvoiceItem') {
+    } else if (method === 'create_invoice_item') {
       const output = JSON.stringify(await createInvoiceItem(this.stripe, arg));
       return output;
-    } else if (method === 'finalizeInvoice') {
+    } else if (method === 'finalize_invoice') {
       const output = JSON.stringify(await finalizeInvoice(this.stripe, arg));
       return output;
-    } else if (method === 'retrieveBalance') {
+    } else if (method === 'retrieve_balance') {
       const output = JSON.stringify(await retrieveBalance(this.stripe, arg));
       return output;
     } else {
