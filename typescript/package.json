@@ -1,6 +1,7 @@
 {
   "name": "@stripe/agent-toolkit",
   "version": "0.1.21",
+  "homepage": "https://github.com/stripe/agent-toolkit",
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf langchain ai-sdk",
