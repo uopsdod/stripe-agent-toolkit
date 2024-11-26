@@ -13,13 +13,19 @@ import {
   finalizeInvoiceParameters,
   retrieveBalanceParameters,
 } from './parameters';
+import type {Context} from './configuration';
 
 export const createCustomer = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof createCustomerParameters>
 ) => {
   try {
-    const customer = await stripe.customers.create(params);
+    const customer = await stripe.customers.create(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return {id: customer.id};
   } catch (error) {
     return 'Failed to create customer';
@@ -28,10 +34,15 @@ export const createCustomer = async (
 
 export const listCustomers = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof listCustomersParameters>
 ) => {
   try {
-    const customers = await stripe.customers.list(params);
+    const customers = await stripe.customers.list(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return customers.data.map((customer) => ({id: customer.id}));
   } catch (error) {
     return 'Failed to list customers';
@@ -40,10 +51,15 @@ export const listCustomers = async (
 
 export const createProduct = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof createProductParameters>
 ) => {
   try {
-    const product = await stripe.products.create(params);
+    const product = await stripe.products.create(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return product;
   } catch (error) {
     return 'Failed to create product';
@@ -52,10 +68,15 @@ export const createProduct = async (
 
 export const listProducts = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof listProductsParameters>
 ) => {
   try {
-    const products = await stripe.products.list(params);
+    const products = await stripe.products.list(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return products.data;
   } catch (error) {
     return 'Failed to list products';
@@ -64,10 +85,15 @@ export const listProducts = async (
 
 export const createPrice = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof createPriceParameters>
 ) => {
   try {
-    const price = await stripe.prices.create(params);
+    const price = await stripe.prices.create(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return price;
   } catch (error) {
     return 'Failed to create price';
@@ -76,10 +102,15 @@ export const createPrice = async (
 
 export const listPrices = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof listPricesParameters>
 ) => {
   try {
-    const prices = await stripe.prices.list(params);
+    const prices = await stripe.prices.list(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return prices.data;
   } catch (error) {
     return 'Failed to list prices';
@@ -88,12 +119,17 @@ export const listPrices = async (
 
 export const createPaymentLink = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof createPaymentLinkParameters>
 ) => {
   try {
-    const paymentLink = await stripe.paymentLinks.create({
-      line_items: [params],
-    });
+    const paymentLink = await stripe.paymentLinks.create(
+      {
+        line_items: [params],
+      },
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return {id: paymentLink.id, url: paymentLink.url};
   } catch (error) {
     return 'Failed to create payment link';
@@ -102,10 +138,15 @@ export const createPaymentLink = async (
 
 export const createInvoice = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof createInvoiceParameters>
 ) => {
   try {
-    const invoice = await stripe.invoices.create(params);
+    const invoice = await stripe.invoices.create(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return {
       id: invoice.id,
       url: invoice.hosted_invoice_url,
@@ -119,10 +160,15 @@ export const createInvoice = async (
 
 export const createInvoiceItem = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof createInvoiceItemParameters>
 ) => {
   try {
-    const invoiceItem = await stripe.invoiceItems.create(params);
+    const invoiceItem = await stripe.invoiceItems.create(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return {
       id: invoiceItem.id,
       invoice: invoiceItem.invoice,
@@ -134,10 +180,15 @@ export const createInvoiceItem = async (
 
 export const finalizeInvoice = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof finalizeInvoiceParameters>
 ) => {
   try {
-    const invoice = await stripe.invoices.finalizeInvoice(params.invoice);
+    const invoice = await stripe.invoices.finalizeInvoice(
+      params.invoice,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return {
       id: invoice.id,
       url: invoice.hosted_invoice_url,
@@ -151,10 +202,15 @@ export const finalizeInvoice = async (
 
 export const retrieveBalance = async (
   stripe: Stripe,
+  context: Context,
   params: z.infer<typeof retrieveBalanceParameters>
 ) => {
   try {
-    const balance = await stripe.balance.retrieve(params);
+    const balance = await stripe.balance.retrieve(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
     return balance;
   } catch (error) {
     return 'Failed to retrieve balance';
