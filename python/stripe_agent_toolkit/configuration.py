@@ -35,9 +35,15 @@ class Actions(TypedDict, total=False):
     balance: Optional[BalancePermission]
 
 
+# Define Context type
+class Context(TypedDict, total=False):
+    account: Optional[str]
+
+
 # Define Configuration type
 class Configuration(TypedDict, total=False):
     actions: Optional[Actions]
+    context: Optional[Context]
 
 
 def is_tool_allowed(tool, configuration):

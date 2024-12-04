@@ -1,7 +1,9 @@
 import stripe
+from typing import Optional
+from .configuration import Context
 
 
-def create_customer(name: str, email: str = None):
+def create_customer(context: Context, name: str, email: Optional[str] = None):
     """
     Create a customer.
 
@@ -12,11 +14,23 @@ def create_customer(name: str, email: str = None):
     Returns:
         stripe.Customer: The created customer.
     """
-    customer = stripe.Customer.create(name=name, email=email)
+    customer_data: dict = {"name": name}
+    if email:
+        customer_data["email"] = email
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            customer_data["stripe_account"] = account
+
+    customer = stripe.Customer.create(**customer_data)
     return {"id": customer.id}
 
 
-def list_customers(email: str = None, limit: int = None):
+def list_customers(
+    context: Context,
+    email: Optional[str] = None,
+    limit: Optional[int] = None,
+):
     """
     List Customers.
 
@@ -27,11 +41,23 @@ def list_customers(email: str = None, limit: int = None):
     Returns:
         stripe.ListObject: A list of customers.
     """
-    customers = stripe.Customer.list(email=email, limit=limit)
+    customer_data: dict = {}
+    if email:
+        customer_data["email"] = email
+    if limit:
+        customer_data["limit"] = limit
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            customer_data["stripe_account"] = account
+
+    customers = stripe.Customer.list(**customer_data)
     return [{"id": customer.id} for customer in customers.data]
 
 
-def create_product(name: str, description: str = None):
+def create_product(
+    context: Context, name: str, description: Optional[str] = None
+):
     """
     Create a product.
 
@@ -42,10 +68,18 @@ def create_product(name: str, description: str = None):
     Returns:
         stripe.Product: The created product.
     """
-    return stripe.Product.create(name=name, description=description)
+    product_data: dict = {"name": name}
+    if description:
+        product_data["description"] = description
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            product_data["stripe_account"] = account
+
+    return stripe.Product.create(**product_data)
 
 
-def list_products(limit: int = None):
+def list_products(context: Context, limit: Optional[int] = None):
     """
     List Products.
     Parameters:
@@ -54,10 +88,20 @@ def list_products(limit: int = None):
     Returns:
         stripe.ListObject: A list of products.
     """
-    return stripe.Product.list(limit=limit).data
+    product_data: dict = {}
+    if limit:
+        product_data["limit"] = limit
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            product_data["stripe_account"] = account
+
+    return stripe.Product.list(**product_data).data
 
 
-def create_price(product: str, currency: str, unit_amount: int):
+def create_price(
+    context: Context, product: str, currency: str, unit_amount: int
+):
     """
     Create a price.
 
@@ -69,12 +113,24 @@ def create_price(product: str, currency: str, unit_amount: int):
     Returns:
         stripe.Price: The created price.
     """
-    return stripe.Price.create(
-        product=product, currency=currency, unit_amount=unit_amount
-    )
+    price_data: dict = {
+        "product": product,
+        "currency": currency,
+        "unit_amount": unit_amount,
+    }
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            price_data["stripe_account"] = account
+
+    return stripe.Price.create(**price_data)
 
 
-def list_prices(product: str = None, limit: int = None):
+def list_prices(
+    context: Context,
+    product: Optional[str] = None,
+    limit: Optional[int] = None,
+):
     """
     List Prices.
 
@@ -85,10 +141,20 @@ def list_prices(product: str = None, limit: int = None):
     Returns:
         stripe.ListObject: A list of prices.
     """
-    return stripe.Price.list(product=product, limit=limit).data
+    prices_data: dict = {}
+    if product:
+        prices_data["product"] = product
+    if limit:
+        prices_data["limit"] = limit
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            prices_data["stripe_account"] = account
+
+    return stripe.Price.list(**prices_data).data
 
 
-def create_payment_link(price: str, quantity: int):
+def create_payment_link(context: Context, price: str, quantity: int):
     """
     Create a payment link.
 
@@ -99,13 +165,20 @@ def create_payment_link(price: str, quantity: int):
     Returns:
         stripe.PaymentLink: The created payment link.
     """
-    payment_link = stripe.PaymentLink.create(
-        line_items=[{"price": price, "quantity": quantity}]
-    )
+    payment_link_data: dict = {
+        "line_items": [{"price": price, "quantity": quantity}],
+    }
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            payment_link_data["stripe_account"] = account
+
+    payment_link = stripe.PaymentLink.create(**payment_link_data)
+
     return {"id": payment_link.id, "url": payment_link.url}
 
 
-def create_invoice(customer: str, days_until_due: int = 30):
+def create_invoice(context: Context, customer: str, days_until_due: int = 30):
     """
     Create an invoice.
 
@@ -117,11 +190,17 @@ def create_invoice(customer: str, days_until_due: int = 30):
     Returns:
         stripe.Invoice: The created invoice.
     """
-    invoice = stripe.Invoice.create(
-        customer=customer,
-        collection_method="send_invoice",
-        days_until_due=days_until_due,
-    )
+    invoice_data: dict = {
+        "customer": customer,
+        "collection_method": "send_invoice",
+        "days_until_due": days_until_due,
+    }
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            invoice_data["stripe_account"] = account
+
+    invoice = stripe.Invoice.create(**invoice_data)
 
     return {
         "id": invoice.id,
@@ -131,7 +210,9 @@ def create_invoice(customer: str, days_until_due: int = 30):
     }
 
 
-def create_invoice_item(customer: str, price: str, invoice: str):
+def create_invoice_item(
+    context: Context, customer: str, price: str, invoice: str
+):
     """
     Create an invoice item.
 
@@ -143,15 +224,22 @@ def create_invoice_item(customer: str, price: str, invoice: str):
     Returns:
         stripe.InvoiceItem: The created invoice item.
     """
-    invoice_item = stripe.InvoiceItem.create(
-        customer=customer,
-        price=price,
-        invoice=invoice,
-    )
+    invoice_item_data: dict = {
+        "customer": customer,
+        "price": price,
+        "invoice": invoice,
+    }
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            invoice_item_data["stripe_account"] = account
+
+    invoice_item = stripe.InvoiceItem.create(**invoice_item_data)
+
     return {"id": invoice_item.id, "invoice": invoice_item.invoice}
 
 
-def finalize_invoice(invoice: str):
+def finalize_invoice(context: Context, invoice: str):
     """
     Finalize an invoice.
 
@@ -161,7 +249,13 @@ def finalize_invoice(invoice: str):
     Returns:
         stripe.Invoice: The finalized invoice.
     """
-    invoice_object = stripe.Invoice.finalize_invoice(invoice=invoice)
+    invoice_data: dict = {"invoice": invoice}
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            invoice_data["stripe_account"] = account
+
+    invoice_object = stripe.Invoice.finalize_invoice(**invoice_data)
 
     return {
         "id": invoice_object.id,
@@ -171,11 +265,19 @@ def finalize_invoice(invoice: str):
     }
 
 
-def retrieve_balance():
+def retrieve_balance(
+    context: Context,
+):
     """
     Retrieve the balance.
 
     Returns:
         stripe.Balance: The balance.
     """
-    return stripe.Balance.retrieve()
+    balance_data: dict = {}
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            balance_data["stripe_account"] = account
+
+    return stripe.Balance.retrieve(**balance_data)
