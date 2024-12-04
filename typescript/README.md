@@ -65,9 +65,9 @@ const stripeAgentToolkit = new StripeAgentToolkit({
   configuration: {
     context: {
       account: 'acct_123',
-    }
-  }
-})
+    },
+  },
+});
 ```
 
 ### Metered billing

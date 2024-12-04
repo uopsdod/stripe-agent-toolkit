@@ -63,9 +63,9 @@ In some cases you will want to provide values that serve as defaults when making
 stripe_agent_toolkit = StripeAgentToolkit(
     secret_key="sk_test_...",
     configuration={
-      "context": {
-        "account": "acct_123"
-      }
+        "context": {
+            "account": "acct_123"
+        }
     }
 )
 ```

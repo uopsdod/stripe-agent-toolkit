@@ -1,4 +1,5 @@
-from typing import TypedDict, Literal, Optional
+from typing import Literal, Optional
+from typing_extensions import TypedDict
 
 # Define Object type
 Object = Literal[

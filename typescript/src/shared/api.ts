@@ -20,7 +20,7 @@ class StripeAPI {
 
   context: Context;
 
-  constructor(secretKey: string, context: Context) {
+  constructor(secretKey: string, context?: Context) {
     const stripeClient = new Stripe(secretKey, {
       appInfo: {
         name: 'stripe-agent-toolkit-typescript',
@@ -29,7 +29,7 @@ class StripeAPI {
       },
     });
     this.stripe = stripeClient;
-    this.context = context;
+    this.context = context || {};
   }
 
   async createMeterEvent({
@@ -41,13 +41,16 @@ class StripeAPI {
     customer: string;
     value: string;
   }) {
-    await this.stripe.billing.meterEvents.create({
-      event_name: event,
-      payload: {
-        stripe_customer_id: customer,
-        value: value,
+    await this.stripe.billing.meterEvents.create(
+      {
+        event_name: event,
+        payload: {
+          stripe_customer_id: customer,
+          value: value,
+        },
       },
-    });
+      this.context.account ? {stripeAccount: this.context.account} : undefined
+    );
   }
 
   async run(method: string, arg: any) {

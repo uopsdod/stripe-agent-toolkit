@@ -31,7 +31,7 @@ class StripeAgentToolkit {
     secretKey: string;
     configuration: Configuration;
   }) {
-    this._stripe = new StripeAPI(secretKey);
+    this._stripe = new StripeAPI(secretKey, configuration.context);
     this.tools = {};
 
     const filteredTools = tools.filter((tool) =>
