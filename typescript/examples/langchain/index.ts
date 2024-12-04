@@ -1,4 +1,4 @@
-import {StripeAgentToolkit} from '../../src/langchain';
+import {StripeAgentToolkit} from '@stripe/agent-toolkit/langchain';
 import {ChatOpenAI} from '@langchain/openai';
 import type {ChatPromptTemplate} from '@langchain/core/prompts';
 import {pull} from 'langchain/hub';
