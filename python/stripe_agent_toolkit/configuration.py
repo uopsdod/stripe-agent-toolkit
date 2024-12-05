@@ -1,4 +1,5 @@
-from typing import TypedDict, Literal, Optional
+from typing import Literal, Optional
+from typing_extensions import TypedDict
 
 # Define Object type
 Object = Literal[
@@ -35,9 +36,15 @@ class Actions(TypedDict, total=False):
     balance: Optional[BalancePermission]
 
 
+# Define Context type
+class Context(TypedDict, total=False):
+    account: Optional[str]
+
+
 # Define Configuration type
 class Configuration(TypedDict, total=False):
     actions: Optional[Actions]
+    context: Optional[Context]
 
 
 def is_tool_allowed(tool, configuration):

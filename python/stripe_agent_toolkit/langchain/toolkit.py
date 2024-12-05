@@ -1,21 +1,25 @@
 """Stripe Agent Toolkit."""
 
-from typing import List
+from typing import List, Optional
 from pydantic import PrivateAttr
 
 from ..api import StripeAPI
 from ..tools import tools
-from ..configuration import Configuration, is_tool_allowed
+from ..configuration import Configuration, Context, is_tool_allowed
 from .tool import StripeTool
 
 
 class StripeAgentToolkit:
     _tools: List = PrivateAttr(default=[])
 
-    def __init__(self, secret_key: str, configuration: Configuration = None):
+    def __init__(
+        self, secret_key: str, configuration: Optional[Configuration] = None
+    ):
         super().__init__()
 
-        stripe_api = StripeAPI(secret_key=secret_key)
+        context = configuration.get("context") if configuration else None
+
+        stripe_api = StripeAPI(secret_key=secret_key, context=context)
 
         filtered_tools = [
             tool for tool in tools if is_tool_allowed(tool, configuration)

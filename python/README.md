@@ -55,6 +55,21 @@ Examples for LangChain and CrewAI are included in `/examples`.
 [python-sdk]: https://github.com/stripe/stripe-python
 [api-keys]: https://dashboard.stripe.com/account/apikeys
 
+#### Context
+
+In some cases you will want to provide values that serve as defaults when making requests. Currently, the `account` context value enables you to make API calls for your [connected accounts](https://docs.stripe.com/connect/authentication).
+
+```python
+stripe_agent_toolkit = StripeAgentToolkit(
+    secret_key="sk_test_...",
+    configuration={
+        "context": {
+            "account": "acct_123"
+        }
+    }
+)
+```
+
 ## Development
 
 ```

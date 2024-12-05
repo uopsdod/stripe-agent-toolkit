@@ -54,12 +54,35 @@ describe('createCustomer', () => {
       name: 'Test User',
     };
 
+    const context = {};
+
     const mockCustomer = {id: 'cus_123456', email: 'test@example.com'};
     stripe.customers.create.mockResolvedValue(mockCustomer);
 
-    const result = await createCustomer(stripe, params);
+    const result = await createCustomer(stripe, context, params);
 
-    expect(stripe.customers.create).toHaveBeenCalledWith(params);
+    expect(stripe.customers.create).toHaveBeenCalledWith(params, undefined);
+    expect(result).toEqual({id: mockCustomer.id});
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const params = {
+      email: 'test@example.com',
+      name: 'Test User',
+    };
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    const mockCustomer = {id: 'cus_123456', email: 'test@example.com'};
+    stripe.customers.create.mockResolvedValue(mockCustomer);
+
+    const result = await createCustomer(stripe, context, params);
+
+    expect(stripe.customers.create).toHaveBeenCalledWith(params, {
+      stripeAccount: context.account,
+    });
     expect(result).toEqual({id: mockCustomer.id});
   });
 });
@@ -71,10 +94,34 @@ describe('listCustomers', () => {
       {id: 'cus_789012', email: 'test2@example.com'},
     ];
 
-    stripe.customers.list.mockResolvedValue({data: mockCustomers});
-    const result = await listCustomers(stripe, {});
+    const context = {};
 
-    expect(stripe.customers.list).toHaveBeenCalledWith({});
+    stripe.customers.list.mockResolvedValue({data: mockCustomers});
+    const result = await listCustomers(stripe, context, {});
+
+    expect(stripe.customers.list).toHaveBeenCalledWith({}, undefined);
+    expect(result).toEqual(mockCustomers.map(({id}) => ({id})));
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const mockCustomers = [
+      {id: 'cus_123456', email: 'test1@example.com'},
+      {id: 'cus_789012', email: 'test2@example.com'},
+    ];
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.customers.list.mockResolvedValue({data: mockCustomers});
+    const result = await listCustomers(stripe, context, {});
+
+    expect(stripe.customers.list).toHaveBeenCalledWith(
+      {},
+      {
+        stripeAccount: context.account,
+      }
+    );
     expect(result).toEqual(mockCustomers.map(({id}) => ({id})));
   });
 });
@@ -85,12 +132,34 @@ describe('createProduct', () => {
       name: 'Test Product',
     };
 
+    const context = {};
+
     const mockProduct = {id: 'prod_123456', name: 'Test Product'};
     stripe.products.create.mockResolvedValue(mockProduct);
 
-    const result = await createProduct(stripe, params);
+    const result = await createProduct(stripe, context, params);
 
-    expect(stripe.products.create).toHaveBeenCalledWith(params);
+    expect(stripe.products.create).toHaveBeenCalledWith(params, undefined);
+    expect(result).toEqual(mockProduct);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const params = {
+      name: 'Test Product',
+    };
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    const mockProduct = {id: 'prod_123456', name: 'Test Product'};
+    stripe.products.create.mockResolvedValue(mockProduct);
+
+    const result = await createProduct(stripe, context, params);
+
+    expect(stripe.products.create).toHaveBeenCalledWith(params, {
+      stripeAccount: context.account,
+    });
     expect(result).toEqual(mockProduct);
   });
 });
@@ -102,10 +171,34 @@ describe('listProducts', () => {
       {id: 'prod_789012', name: 'Test Product 2'},
     ];
 
-    stripe.products.list.mockResolvedValue({data: mockProducts});
-    const result = await listProducts(stripe, {});
+    const context = {};
 
-    expect(stripe.products.list).toHaveBeenCalledWith({});
+    stripe.products.list.mockResolvedValue({data: mockProducts});
+    const result = await listProducts(stripe, context, {});
+
+    expect(stripe.products.list).toHaveBeenCalledWith({}, undefined);
+    expect(result).toEqual(mockProducts);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const mockProducts = [
+      {id: 'prod_123456', name: 'Test Product 1'},
+      {id: 'prod_789012', name: 'Test Product 2'},
+    ];
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.products.list.mockResolvedValue({data: mockProducts});
+    const result = await listProducts(stripe, context, {});
+
+    expect(stripe.products.list).toHaveBeenCalledWith(
+      {},
+      {
+        stripeAccount: context.account,
+      }
+    );
     expect(result).toEqual(mockProducts);
   });
 });
@@ -118,12 +211,36 @@ describe('createPrice', () => {
       product: 'prod_123456',
     };
 
+    const context = {};
+
     const mockPrice = {id: 'price_123456', unit_amount: 1000, currency: 'usd'};
     stripe.prices.create.mockResolvedValue(mockPrice);
 
-    const result = await createPrice(stripe, params);
+    const result = await createPrice(stripe, context, params);
 
-    expect(stripe.prices.create).toHaveBeenCalledWith(params);
+    expect(stripe.prices.create).toHaveBeenCalledWith(params, undefined);
+    expect(result).toEqual(mockPrice);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const params = {
+      unit_amount: 1000,
+      currency: 'usd',
+      product: 'prod_123456',
+    };
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    const mockPrice = {id: 'price_123456', unit_amount: 1000, currency: 'usd'};
+    stripe.prices.create.mockResolvedValue(mockPrice);
+
+    const result = await createPrice(stripe, context, params);
+
+    expect(stripe.prices.create).toHaveBeenCalledWith(params, {
+      stripeAccount: context.account,
+    });
     expect(result).toEqual(mockPrice);
   });
 });
@@ -135,10 +252,34 @@ describe('listPrices', () => {
       {id: 'price_789012', unit_amount: 2000, currency: 'usd'},
     ];
 
-    stripe.prices.list.mockResolvedValue({data: mockPrices});
-    const result = await listPrices(stripe, {});
+    const context = {};
 
-    expect(stripe.prices.list).toHaveBeenCalledWith({});
+    stripe.prices.list.mockResolvedValue({data: mockPrices});
+    const result = await listPrices(stripe, context, {});
+
+    expect(stripe.prices.list).toHaveBeenCalledWith({}, undefined);
+    expect(result).toEqual(mockPrices);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const mockPrices = [
+      {id: 'price_123456', unit_amount: 1000, currency: 'usd'},
+      {id: 'price_789012', unit_amount: 2000, currency: 'usd'},
+    ];
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.prices.list.mockResolvedValue({data: mockPrices});
+    const result = await listPrices(stripe, context, {});
+
+    expect(stripe.prices.list).toHaveBeenCalledWith(
+      {},
+      {
+        stripeAccount: context.account,
+      }
+    );
     expect(result).toEqual(mockPrices);
   });
 });
@@ -159,14 +300,48 @@ describe('createPaymentLink', () => {
       url: 'https://example.com',
     };
 
+    const context = {};
+
     stripe.paymentLinks.create.mockResolvedValue(mockPaymentLink);
 
-    const result = await createPaymentLink(stripe, {
+    const result = await createPaymentLink(stripe, context, {
       price: 'price_123456',
       quantity: 1,
     });
 
-    expect(stripe.paymentLinks.create).toHaveBeenCalledWith(params);
+    expect(stripe.paymentLinks.create).toHaveBeenCalledWith(params, undefined);
+    expect(result).toEqual(mockPaymentLink);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const params = {
+      line_items: [
+        {
+          price: 'price_123456',
+          quantity: 1,
+        },
+      ],
+    };
+
+    const mockPaymentLink = {
+      id: 'pl_123456',
+      url: 'https://example.com',
+    };
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.paymentLinks.create.mockResolvedValue(mockPaymentLink);
+
+    const result = await createPaymentLink(stripe, context, {
+      price: 'price_123456',
+      quantity: 1,
+    });
+
+    expect(stripe.paymentLinks.create).toHaveBeenCalledWith(params, {
+      stripeAccount: context.account,
+    });
     expect(result).toEqual(mockPaymentLink);
   });
 });
@@ -179,9 +354,36 @@ describe('createInvoice', () => {
     };
 
     const mockInvoice = {id: 'in_123456', customer: 'cus_123456'};
+
+    const context = {};
+
     stripe.invoices.create.mockResolvedValue(mockInvoice);
-    const result = await createInvoice(stripe, params);
-    expect(stripe.invoices.create).toHaveBeenCalledWith(params);
+
+    const result = await createInvoice(stripe, context, params);
+
+    expect(stripe.invoices.create).toHaveBeenCalledWith(params, undefined);
+    expect(result).toEqual(mockInvoice);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const params = {
+      customer: 'cus_123456',
+      items: [{price: 'price_123456', quantity: 1}],
+    };
+
+    const mockInvoice = {id: 'in_123456', customer: 'cus_123456'};
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.invoices.create.mockResolvedValue(mockInvoice);
+
+    const result = await createInvoice(stripe, context, params);
+
+    expect(stripe.invoices.create).toHaveBeenCalledWith(params, {
+      stripeAccount: context.account,
+    });
     expect(result).toEqual(mockInvoice);
   });
 });
@@ -189,10 +391,38 @@ describe('createInvoice', () => {
 describe('finalizeInvoice', () => {
   it('should finalize an invoice and return it', async () => {
     const invoiceId = 'in_123456';
+
     const mockInvoice = {id: invoiceId, customer: 'cus_123456'};
+
+    const context = {};
+
     stripe.invoices.finalizeInvoice.mockResolvedValue(mockInvoice);
-    const result = await finalizeInvoice(stripe, {invoice: invoiceId});
-    expect(stripe.invoices.finalizeInvoice).toHaveBeenCalledWith(invoiceId);
+
+    const result = await finalizeInvoice(stripe, context, {invoice: invoiceId});
+
+    expect(stripe.invoices.finalizeInvoice).toHaveBeenCalledWith(
+      invoiceId,
+      undefined
+    );
+    expect(result).toEqual(mockInvoice);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const invoiceId = 'in_123456';
+
+    const mockInvoice = {id: invoiceId, customer: 'cus_123456'};
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.invoices.finalizeInvoice.mockResolvedValue(mockInvoice);
+
+    const result = await finalizeInvoice(stripe, context, {invoice: invoiceId});
+
+    expect(stripe.invoices.finalizeInvoice).toHaveBeenCalledWith(invoiceId, {
+      stripeAccount: context.account,
+    });
     expect(result).toEqual(mockInvoice);
   });
 });
@@ -206,9 +436,37 @@ describe('createInvoiceItem', () => {
     };
 
     const mockInvoiceItem = {id: 'ii_123456', invoice: 'in_123456'};
+
+    const context = {};
+
     stripe.invoiceItems.create.mockResolvedValue(mockInvoiceItem);
-    const result = await createInvoiceItem(stripe, params);
-    expect(stripe.invoiceItems.create).toHaveBeenCalledWith(params);
+
+    const result = await createInvoiceItem(stripe, context, params);
+
+    expect(stripe.invoiceItems.create).toHaveBeenCalledWith(params, undefined);
+    expect(result).toEqual(mockInvoiceItem);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const params = {
+      customer: 'cus_123456',
+      price: 'price_123456',
+      invoice: 'in_123456',
+    };
+
+    const mockInvoiceItem = {id: 'ii_123456', invoice: 'in_123456'};
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.invoiceItems.create.mockResolvedValue(mockInvoiceItem);
+
+    const result = await createInvoiceItem(stripe, context, params);
+
+    expect(stripe.invoiceItems.create).toHaveBeenCalledWith(params, {
+      stripeAccount: context.account,
+    });
     expect(result).toEqual(mockInvoiceItem);
   });
 });
@@ -216,9 +474,34 @@ describe('createInvoiceItem', () => {
 describe('retrieveBalance', () => {
   it('should retrieve the balance and return it', async () => {
     const mockBalance = {available: [{amount: 1000, currency: 'usd'}]};
+
+    const context = {};
+
     stripe.balance.retrieve.mockResolvedValue(mockBalance);
-    const result = await retrieveBalance(stripe, {});
-    expect(stripe.balance.retrieve).toHaveBeenCalled();
+
+    const result = await retrieveBalance(stripe, context, {});
+
+    expect(stripe.balance.retrieve).toHaveBeenCalledWith({}, undefined);
+    expect(result).toEqual(mockBalance);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const mockBalance = {available: [{amount: 1000, currency: 'usd'}]};
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.balance.retrieve.mockResolvedValue(mockBalance);
+
+    const result = await retrieveBalance(stripe, context, {});
+
+    expect(stripe.balance.retrieve).toHaveBeenCalledWith(
+      {},
+      {
+        stripeAccount: context.account,
+      }
+    );
     expect(result).toEqual(mockBalance);
   });
 });

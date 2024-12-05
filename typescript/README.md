@@ -55,6 +55,21 @@ const agentExecutor = new AgentExecutor({
 });
 ```
 
+#### Context
+
+In some cases you will want to provide values that serve as defaults when making requests. Currently, the `account` context value enables you to make API calls for your [connected accounts](https://docs.stripe.com/connect/authentication).
+
+```typescript
+const stripeAgentToolkit = new StripeAgentToolkit({
+  secretKey: process.env.STRIPE_SECRET_KEY!,
+  configuration: {
+    context: {
+      account: 'acct_123',
+    },
+  },
+});
+```
+
 ### Metered billing
 
 For Vercel's AI SDK, you can use middleware to submit billing events for usage. All that is required is the customer ID and the input/output meters to bill.
