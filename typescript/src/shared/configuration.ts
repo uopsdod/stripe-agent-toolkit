@@ -10,7 +10,8 @@ export type Object =
   | 'paymentLinks'
   | 'products'
   | 'prices'
-  | 'balance';
+  | 'balance'
+  | 'refunds';
 
 export type Permission = 'create' | 'update' | 'read';
 

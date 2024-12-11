@@ -11,6 +11,7 @@ import {
   createInvoiceItem,
   finalizeInvoice,
   retrieveBalance,
+  createRefund,
 } from './functions';
 
 import type {Context} from './configuration';
@@ -107,6 +108,11 @@ class StripeAPI {
     } else if (method === 'retrieve_balance') {
       const output = JSON.stringify(
         await retrieveBalance(this.stripe, this.context, arg)
+      );
+      return output;
+    } else if (method === 'create_refund') {
+      const output = JSON.stringify(
+        await createRefund(this.stripe, this.context, arg)
       );
       return output;
     } else {

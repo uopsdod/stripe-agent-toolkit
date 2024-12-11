@@ -12,6 +12,7 @@ import {
   createInvoiceItemParameters,
   finalizeInvoiceParameters,
   retrieveBalanceParameters,
+  createRefundParameters,
 } from './parameters';
 import type {Context} from './configuration';
 
@@ -214,5 +215,22 @@ export const retrieveBalance = async (
     return balance;
   } catch (error) {
     return 'Failed to retrieve balance';
+  }
+};
+
+export const createRefund = async (
+  stripe: Stripe,
+  context: Context,
+  params: z.infer<typeof createRefundParameters>
+) => {
+  try {
+    const refund = await stripe.refunds.create(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
+    return refund;
+  } catch (error) {
+    return 'Failed to create refund';
   }
 };
