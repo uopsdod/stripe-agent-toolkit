@@ -149,3 +149,16 @@ class RetrieveBalance(BaseModel):
     """Schema for the ``retrieve_balance`` operation."""
 
     pass
+
+
+class CreateRefund(BaseModel):
+    """Schema for the ``create_refund`` operation."""
+
+    payment_intent: str = Field(
+        ...,
+        description="The ID of the PaymentIntent to refund.",
+    )
+    amount: Optional[int] = Field(
+        ...,
+        description="The amount to refund in cents.",
+    )

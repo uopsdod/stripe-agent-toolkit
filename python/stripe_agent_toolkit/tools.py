@@ -12,6 +12,7 @@ from .prompts import (
     CREATE_INVOICE_ITEM_PROMPT,
     FINALIZE_INVOICE_PROMPT,
     RETRIEVE_BALANCE_PROMPT,
+    CREATE_REFUND_PROMPT,
 )
 
 from .schema import (
@@ -26,6 +27,7 @@ from .schema import (
     CreateInvoiceItem,
     FinalizeInvoice,
     RetrieveBalance,
+    CreateRefund,
 )
 
 tools: List[Dict] = [
@@ -147,6 +149,17 @@ tools: List[Dict] = [
         "actions": {
             "balance": {
                 "read": True,
+            }
+        },
+    },
+    {
+        "method": "create_refund",
+        "name": "Create Refund",
+        "description": CREATE_REFUND_PROMPT,
+        "args_schema": CreateRefund,
+        "actions": {
+            "refunds": {
+                "create": True,
             }
         },
     },
