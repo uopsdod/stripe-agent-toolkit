@@ -178,6 +178,21 @@ const model = wrapLanguageModel({
 });
 ```
 
+## Supported API methods
+
+- [Create a customer](https://docs.stripe.com/api/customers/create)
+- [List all customers](https://docs.stripe.com/api/customers/list)
+- [Create a product](https://docs.stripe.com/api/products/create)
+- [List all products](https://docs.stripe.com/api/products/list)
+- [Create a price](https://docs.stripe.com/api/prices/create)
+- [List all prices](https://docs.stripe.com/api/prices/list)
+- [Create a payment link](https://docs.stripe.com/api/payment-link/create)
+- [Create an invoice](https://docs.stripe.com/api/invoices/create)
+- [Create an invoice item](https://docs.stripe.com/api/invoiceitems/create)
+- [Finalize an invoice](https://docs.stripe.com/api/invoices/finalize)
+- [Retrieve balance](https://docs.stripe.com/api/balance/balance_retrieve)
+- [Create a refund](https://docs.stripe.com/api/refunds/create)
+
 [python-sdk]: https://github.com/stripe/stripe-python
 [node-sdk]: https://github.com/stripe/stripe-node
 [api-keys]: https://dashboard.stripe.com/account/apikeys
