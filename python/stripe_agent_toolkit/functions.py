@@ -281,3 +281,29 @@ def retrieve_balance(
             balance_data["stripe_account"] = account
 
     return stripe.Balance.retrieve(**balance_data)
+
+
+def create_refund(
+    context: Context, payment_intent: str, amount: Optional[int] = None
+):
+    """
+    Create a refund.
+
+    Parameters:
+        payment_intent (str): The ID of the payment intent.
+        amount (int, optional): The amount to refund in cents.
+
+    Returns:
+        stripe.Refund: The created refund.
+    """
+    refund_data: dict = {
+        "payment_intent": payment_intent,
+    }
+    if amount:
+        refund_data["amount"] = amount
+        if context.get("account") is not None:
+            account = context.get("account")
+            if account is not None:
+                refund_data["stripe_account"] = account
+
+    return stripe.Refund.create(**refund_data)

@@ -40,7 +40,7 @@ It takes three arguments:
 LIST_PRICES_PROMPT = """
 This tool will fetch a list of Prices from Stripe.
 
-It takes two arguments.
+It takes two arguments:
 - product (str, optional): The ID of the product to list prices for.
 - limit (int, optional): The number of prices to return.
 """
@@ -77,4 +77,13 @@ It takes one argument:
 
 RETRIEVE_BALANCE_PROMPT = """
 This tool will retrieve the balance from Stripe. It takes no input.
+"""
+
+CREATE_REFUND_PROMPT = """
+This tool will refund a payment intent in Stripe.
+
+It takes three arguments:
+- payment_intent (str): The ID of the payment intent to refund.
+- amount (int, optional): The amount to refund in cents.
+- reason (str, optional): The reason for the refund.
 """

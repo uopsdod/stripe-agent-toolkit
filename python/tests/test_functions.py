@@ -13,6 +13,7 @@ from stripe_agent_toolkit.functions import (
     create_invoice_item,
     finalize_invoice,
     retrieve_balance,
+    create_refund,
 )
 
 
@@ -562,6 +563,55 @@ class TestStripeFunctions(unittest.TestCase):
             mock_function.assert_called_with(stripe_account="acct_123")
 
             self.assertEqual(result, mock_balance)
+
+    def test_create_refund(self):
+        with mock.patch("stripe.Refund.create") as mock_function:
+            mock_refund = {"id": "re_123"}
+            mock_function.return_value = stripe.Refund.construct_from(
+                mock_refund, "sk_test_123"
+            )
+
+            result = create_refund(context={}, payment_intent="pi_123")
+
+            mock_function.assert_called_with(payment_intent="pi_123")
+
+            self.assertEqual(result, {"id": mock_refund["id"]})
+
+    def test_create_partial_refund(self):
+        with mock.patch("stripe.Refund.create") as mock_function:
+            mock_refund = {"id": "re_123"}
+            mock_function.return_value = stripe.Refund.construct_from(
+                mock_refund, "sk_test_123"
+            )
+
+            result = create_refund(
+                context={}, payment_intent="pi_123", amount=1000
+            )
+
+            mock_function.assert_called_with(
+                payment_intent="pi_123", amount=1000
+            )
+
+            self.assertEqual(result, {"id": mock_refund["id"]})
+
+    def test_create_refund_with_context(self):
+        with mock.patch("stripe.Refund.create") as mock_function:
+            mock_refund = {"id": "re_123"}
+            mock_function.return_value = stripe.Refund.construct_from(
+                mock_refund, "sk_test_123"
+            )
+
+            result = create_refund(
+                context={"account": "acct_123"},
+                payment_intent="pi_123",
+                amount=1000,
+            )
+
+            mock_function.assert_called_with(
+                payment_intent="pi_123", amount=1000, stripe_account="acct_123"
+            )
+
+            self.assertEqual(result, {"id": mock_refund["id"]})
 
 
 if __name__ == "__main__":

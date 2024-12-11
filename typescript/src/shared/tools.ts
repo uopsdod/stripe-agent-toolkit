@@ -10,6 +10,7 @@ import {
   createInvoiceItemPrompt,
   finalizeInvoicePrompt,
   retrieveBalancePrompt,
+  createRefundPrompt,
 } from './prompts';
 
 import {
@@ -24,6 +25,7 @@ import {
   createInvoiceItemParameters,
   finalizeInvoiceParameters,
   retrieveBalanceParameters,
+  createRefundParameters,
 } from './parameters';
 
 export type Tool = {
@@ -157,6 +159,17 @@ const tools: Tool[] = [
     actions: {
       balance: {
         read: true,
+      },
+    },
+  },
+  {
+    method: 'create_refund',
+    name: 'Create Refund',
+    description: createRefundPrompt,
+    parameters: createRefundParameters,
+    actions: {
+      refunds: {
+        create: true,
       },
     },
   },

@@ -104,3 +104,12 @@ export const finalizeInvoiceParameters = z.object({
 });
 
 export const retrieveBalanceParameters = z.object({});
+
+export const createRefundParameters = z.object({
+  payment_intent: z.string().describe('The ID of the PaymentIntent to refund.'),
+  amount: z
+    .number()
+    .int()
+    .optional()
+    .describe('The amount to refund in cents.'),
+});

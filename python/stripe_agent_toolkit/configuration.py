@@ -10,6 +10,7 @@ Object = Literal[
     "products",
     "prices",
     "balance",
+    "refunds",
 ]
 
 
@@ -34,6 +35,7 @@ class Actions(TypedDict, total=False):
     products: Optional[Permission]
     prices: Optional[Permission]
     balance: Optional[BalancePermission]
+    refunds: Optional[Permission]
 
 
 # Define Context type

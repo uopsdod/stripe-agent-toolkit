@@ -77,3 +77,12 @@ It takes one argument:
 export const retrieveBalancePrompt = `
 This tool will retrieve the balance from Stripe. It takes no input.
 `;
+
+export const createRefundPrompt = `
+This tool will refund a payment intent in Stripe.
+
+It takes three arguments:
+- payment_intent (str): The ID of the payment intent to refund.
+- amount (int, optional): The amount to refund in cents.
+- reason (str, optional): The reason for the refund.
+`;
