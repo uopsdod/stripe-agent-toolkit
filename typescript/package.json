@@ -55,7 +55,7 @@
   },
   "peerDependencies": {
     "@langchain/core": "^0.3.6",
-    "ai": "^3.4.7"
+    "ai": "^3.4.7 || ^4.0.0"
   },
   "workspaces": [
     ".",
