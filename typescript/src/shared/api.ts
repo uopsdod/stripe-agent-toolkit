@@ -21,10 +21,10 @@ class StripeAPI {
 
   context: Context;
 
-  constructor(secretKey: string, context?: Context) {
+  constructor(secretKey: string, context?: Context, name?: string) {
     const stripeClient = new Stripe(secretKey, {
       appInfo: {
-        name: 'stripe-agent-toolkit-typescript',
+        name: name || 'stripe-agent-toolkit-typescript',
         version: '0.2.2',
         url: 'https://github.com/stripe/agent-toolkit',
       },
