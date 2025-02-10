@@ -1,7 +1,7 @@
 # Stripe Agent Toolkit
 
 The Stripe Agent Toolkit enables popular agent frameworks including LangChain,
-CrewAI, and Vercel's AI SDK, to integrate with Stripe APIs through function calling. The
+CrewAI, Vercel's AI SDK, and Model Context Protocol (MCP) to integrate with Stripe APIs through function calling. The
 library is not exhaustive of the entire Stripe API. It includes support for both Python and TypeScript and is built directly on top of the Stripe [Python][python-sdk] and [Node][node-sdk] SDKs.
 
 Included below are basic instructions, but refer to the [Python](/python) and [TypeScript](/typescript) packages for more information.
@@ -91,7 +91,7 @@ npm install @stripe/agent-toolkit
 The library needs to be configured with your account's secret key which is available in your [Stripe Dashboard][api-keys]. Additionally, `configuration` enables you to specify the types of actions that can be taken using the toolkit.
 
 ```typescript
-import {StripeAgentToolkit} from "@stripe/agent-toolkit/langchain";
+import { StripeAgentToolkit } from "@stripe/agent-toolkit/langchain";
 
 const stripeAgentToolkit = new StripeAgentToolkit({
   secretKey: process.env.STRIPE_SECRET_KEY!,
@@ -110,7 +110,7 @@ const stripeAgentToolkit = new StripeAgentToolkit({
 The toolkit works with LangChain and Vercel's AI SDK and can be passed as a list of tools. For example:
 
 ```typescript
-import {AgentExecutor, createStructuredChatAgent} from 'langchain/agents';
+import { AgentExecutor, createStructuredChatAgent } from "langchain/agents";
 
 const tools = stripeAgentToolkit.getTools();
 
@@ -135,10 +135,10 @@ const stripeAgentToolkit = new StripeAgentToolkit({
   secretKey: process.env.STRIPE_SECRET_KEY!,
   configuration: {
     context: {
-      account: 'acct_123',
+      account: "acct_123",
     },
   },
-})
+});
 ```
 
 #### Metered billing
@@ -146,12 +146,12 @@ const stripeAgentToolkit = new StripeAgentToolkit({
 For Vercel's AI SDK, you can use middleware to submit billing events for usage. All that is required is the customer ID and the input/output meters to bill.
 
 ```typescript
-import {StripeAgentToolkit} from '@stripe/agent-toolkit/ai-sdk';
-import {openai} from '@ai-sdk/openai';
+import { StripeAgentToolkit } from "@stripe/agent-toolkit/ai-sdk";
+import { openai } from "@ai-sdk/openai";
 import {
   generateText,
   experimental_wrapLanguageModel as wrapLanguageModel,
-} from 'ai';
+} from "ai";
 
 const stripeAgentToolkit = new StripeAgentToolkit({
   secretKey: process.env.STRIPE_SECRET_KEY!,
@@ -165,16 +165,53 @@ const stripeAgentToolkit = new StripeAgentToolkit({
 });
 
 const model = wrapLanguageModel({
-  model: openai('gpt-4o'),
+  model: openai("gpt-4o"),
   middleware: stripeAgentToolkit.middleware({
     billing: {
-      customer: 'cus_123',
+      customer: "cus_123",
       meters: {
-        input: 'input_tokens',
-        output: 'output_tokens',
+        input: "input_tokens",
+        output: "output_tokens",
       },
     },
   }),
+});
+```
+
+## Model Context Protocol
+
+The Stripe Agent Toolkit also supports the [Model Context Protocol (MCP)](https://modelcontextprotocol.com/). See `/typescript/examples/modelcontextprotocol` for an example. The same configuration options are available, and the server can be run with all supported transports.
+
+```typescript
+import { StripeAgentToolkit } from "@stripe/agent-toolkit/modelcontextprotocol";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+
+const server = new StripeAgentToolkit({
+  secretKey: process.env.STRIPE_SECRET_KEY!,
+  configuration: {
+    actions: {
+      paymentLinks: {
+        create: true,
+      },
+      products: {
+        create: true,
+      },
+      prices: {
+        create: true,
+      },
+    },
+  },
+});
+
+async function main() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  console.error("Stripe MCP Server running on stdio");
+}
+
+main().catch((error) => {
+  console.error("Fatal error in main():", error);
+  process.exit(1);
 });
 ```
 
@@ -196,4 +233,3 @@ const model = wrapLanguageModel({
 [python-sdk]: https://github.com/stripe/stripe-python
 [node-sdk]: https://github.com/stripe/stripe-node
 [api-keys]: https://dashboard.stripe.com/account/apikeys
-

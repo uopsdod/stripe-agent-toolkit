@@ -4,7 +4,7 @@
   "homepage": "https://github.com/stripe/agent-toolkit",
   "scripts": {
     "build": "tsup",
-    "clean": "rm -rf langchain ai-sdk",
+    "clean": "rm -rf langchain ai-sdk modelcontextprotocol",
     "lint": "eslint \"./**/*.ts*\"",
     "prettier": "prettier './**/*.{js,ts,md,html,css}' --write",
     "prettier-check": "prettier './**/*.{js,ts,md,html,css}' --check",
@@ -20,6 +20,11 @@
       "types": "./ai-sdk/index.d.ts",
       "require": "./ai-sdk/index.js",
       "import": "./ai-sdk/index.mjs"
+    },
+    "./modelcontextprotocol": {
+      "types": "./modelcontextprotocol/index.d.ts",
+      "require": "./modelcontextprotocol/index.js",
+      "import": "./modelcontextprotocol/index.mjs"
     }
   },
   "packageManager": "pnpm@9.11.0",
@@ -55,6 +60,7 @@
   },
   "peerDependencies": {
     "@langchain/core": "^0.3.6",
+    "@modelcontextprotocol/sdk": "^1.4.1",
     "ai": "^3.4.7 || ^4.0.0"
   },
   "workspaces": [

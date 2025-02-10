@@ -15,4 +15,11 @@ export default defineConfig([
     dts: true,
     sourcemap: true,
   },
+  {
+    entry: ['src/modelcontextprotocol/index.ts'],
+    outDir: 'modelcontextprotocol',
+    format: ['cjs', 'esm'],
+    dts: true,
+    sourcemap: true,
+  },
 ]);

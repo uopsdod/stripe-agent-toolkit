@@ -109,5 +109,42 @@ const model = wrapLanguageModel({
 
 This works with both `generateText` and `generateStream` from the Vercel AI SDK.
 
+## Model Context Protocol
+
+The Stripe Agent Toolkit also supports the [Model Context Protocol (MCP)](https://modelcontextprotocol.com/). See `/examples/modelcontextprotocol` for an example. The same configuration options are available, and the server can be run with all supported transports.
+
+```typescript
+import {StripeAgentToolkit} from '@stripe/agent-toolkit/modelcontextprotocol';
+import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
+
+const server = new StripeAgentToolkit({
+  secretKey: process.env.STRIPE_SECRET_KEY!,
+  configuration: {
+    actions: {
+      paymentLinks: {
+        create: true,
+      },
+      products: {
+        create: true,
+      },
+      prices: {
+        create: true,
+      },
+    },
+  },
+});
+
+async function main() {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  console.error('Stripe MCP Server running on stdio');
+}
+
+main().catch((error) => {
+  console.error('Fatal error in main():', error);
+  process.exit(1);
+});
+```
+
 [node-sdk]: https://github.com/stripe/stripe-node
 [api-keys]: https://dashboard.stripe.com/account/apikeys

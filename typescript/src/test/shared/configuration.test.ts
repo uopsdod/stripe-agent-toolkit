@@ -1,3 +1,4 @@
+import z from 'zod';
 import {isToolAllowed} from '../../shared/configuration';
 
 describe('isToolAllowed', () => {
@@ -6,7 +7,9 @@ describe('isToolAllowed', () => {
       method: 'test',
       name: 'Test',
       description: 'Test',
-      parameters: {},
+      parameters: z.object({
+        foo: z.string(),
+      }),
       actions: {
         customers: {
           create: true,
@@ -40,7 +43,9 @@ describe('isToolAllowed', () => {
       method: 'test',
       name: 'Test',
       description: 'Test',
-      parameters: {},
+      parameters: z.object({
+        foo: z.string(),
+      }),
       actions: {
         customers: {
           create: true,
@@ -74,7 +79,9 @@ describe('isToolAllowed', () => {
       method: 'test',
       name: 'Test',
       description: 'Test',
-      parameters: {},
+      parameters: z.object({
+        foo: z.string(),
+      }),
       actions: {
         paymentLinks: {
           create: true,

@@ -1,3 +1,5 @@
+import {z} from 'zod';
+
 import {
   createCustomerPrompt,
   listCustomersPrompt,
@@ -32,7 +34,7 @@ export type Tool = {
   method: string;
   name: string;
   description: string;
-  parameters: any;
+  parameters: z.ZodObject<any, any, any, any>;
   actions: {
     [key: string]: {
       [action: string]: boolean;
