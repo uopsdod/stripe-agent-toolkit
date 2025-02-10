@@ -19,11 +19,7 @@ class StripeAgentToolkit extends McpServer {
       version: '0.2.2',
     });
 
-    this._stripe = new StripeAPI(
-      secretKey,
-      configuration.context,
-      'stripe-agent-toolkit-typescript-mcp'
-    );
+    this._stripe = new StripeAPI(secretKey, configuration.context);
 
     const filteredTools = tools.filter((tool) =>
       isToolAllowed(tool, configuration)
