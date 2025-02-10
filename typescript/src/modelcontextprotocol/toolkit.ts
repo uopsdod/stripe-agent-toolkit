@@ -16,7 +16,7 @@ class StripeAgentToolkit extends McpServer {
   }) {
     super({
       name: 'Stripe',
-      version: '0.3.0',
+      version: '0.3.1',
     });
 
     this._stripe = new StripeAPI(secretKey, configuration.context);
