@@ -1,4 +1,4 @@
-import {StripeAgentToolkit} from '../../../modelcontextprotocol/index.js';
+import {StripeAgentToolkit} from '@stripe/agent-toolkit/modelcontextprotocol';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
 
 const server = new StripeAgentToolkit({
