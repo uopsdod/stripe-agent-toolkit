@@ -1,4 +1,5 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
+import {RequestHandlerExtra} from '@modelcontextprotocol/sdk/shared/protocol.js';
 import {Configuration, isToolAllowed} from '../shared/configuration';
 import StripeAPI from '../shared/api';
 import tools from '../shared/tools';
@@ -33,14 +34,13 @@ class StripeAgentToolkit extends McpServer {
         tool.method,
         tool.description,
         tool.parameters.shape,
-        // @ts-expect-error
-        async (arg: any) => {
+        async (arg: any, _extra: RequestHandlerExtra) => {
           const result = await this._stripe.run(tool.method, arg);
           return {
             content: [
               {
-                type: 'text',
-                text: result,
+                type: 'text' as const,
+                text: String(result),
               },
             ],
           };
