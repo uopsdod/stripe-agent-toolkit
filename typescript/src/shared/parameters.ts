@@ -117,7 +117,9 @@ export const createRefundParameters = z.object({
 export const searchDocumentationParameters = z.object({
   question: z
     .string()
-    .describe('The question to ask about Stripe documentation.'),
+    .describe(
+      'The user question about integrating with Stripe will be used to search the documentation.'
+    ),
   language: z
     .enum(['dotnet', 'go', 'java', 'node', 'php', 'ruby', 'python', 'curl'])
     .optional()

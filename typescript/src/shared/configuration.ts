@@ -12,7 +12,7 @@ export type Object =
   | 'prices'
   | 'balance'
   | 'refunds'
-  | 'search_documentation';
+  | 'documentation';
 
 export type Permission = 'create' | 'update' | 'read';
 
