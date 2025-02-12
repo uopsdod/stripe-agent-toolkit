@@ -119,7 +119,7 @@ export const searchDocumentationParameters = z.object({
     .string()
     .describe('The question to ask about Stripe documentation.'),
   language: z
-    .string()
+    .enum(['dotnet', 'go', 'java', 'node', 'php', 'ruby', 'python', 'curl'])
     .optional()
     .describe(
       'The programming language to search for in the the documentation.'

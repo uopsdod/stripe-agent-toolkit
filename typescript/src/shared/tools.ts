@@ -183,7 +183,7 @@ const tools: Tool[] = [
     description: searchDocumentationPrompt,
     parameters: searchDocumentationParameters,
     actions: {
-      search: {
+      search_documentation: {
         read: true,
       },
     },

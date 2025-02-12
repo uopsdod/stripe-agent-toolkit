@@ -88,9 +88,9 @@ It takes three arguments:
 `;
 
 export const searchDocumentationPrompt = `
-This tool will take in a question input, search and retrieve relevant Stripe documentation to answer the question.
+This tool will take in a user question about integrating with Stripe in their application, then search and retrieve relevant Stripe documentation to answer the question.
 
 It takes two arguments:
-- question (str): The question to ask about Stripe documentation.
+- question (str): The user question to search an answer for in the Stripe documentation.
 - language (str, optional): The programming language to search for in the the documentation.
 `;

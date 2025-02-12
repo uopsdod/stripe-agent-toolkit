@@ -13,11 +13,8 @@ import {
   createRefund,
   searchDocumentation,
 } from '../../shared/functions';
-import {internalStripeFetch} from '../../shared/helpers';
-
-jest.mock('../../shared/helpers', () => ({
-  internalStripeFetch: jest.fn(),
-}));
+import {z} from 'zod';
+import {searchDocumentationParameters} from '../../shared/parameters';
 
 const Stripe = jest.fn().mockImplementation(() => ({
   customers: {
@@ -577,39 +574,42 @@ describe('createRefund', () => {
 describe('searchDocumentation', () => {
   it('should search for Stripe documentation and return sources', async () => {
     const question = 'How to create Stripe checkout session?';
-    const requestBody = {
+    const requestBody: z.infer<typeof searchDocumentationParameters> = {
       question: question,
       language: 'ruby',
     };
 
-    const mockDocumentation = {
+    const sources = [
+      {
+        type: 'docs',
+        url: 'https://docs.stripe.com/payments/checkout/how-checkout-works',
+        title: 'How checkout works',
+        content: '...',
+      },
+    ];
+    const mockResponse = {
       question: question,
       status: 'success',
-      sources: [
-        {
-          type: 'docs',
-          url: 'https://docs.stripe.com/payments/checkout/how-checkout-works',
-          title: 'How checkout works',
-          content: '...',
-        },
-      ],
+      sources: sources,
     };
 
-    const context = {};
+    const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      json: jest.fn().mockResolvedValueOnce(mockResponse),
+    } as unknown as Response);
 
-    (internalStripeFetch as jest.Mock).mockResolvedValue(mockDocumentation);
+    const result = await searchDocumentation(stripe, {}, requestBody);
 
-    const result = await searchDocumentation(stripe, context, requestBody);
+    expect(fetchMock).toHaveBeenCalledWith('https://ai.stripe.com/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    });
 
-    expect(internalStripeFetch).toHaveBeenCalledWith(
-      'https://ai.stripe.com/search',
-      'POST',
-      requestBody
-    );
-
-    // We sanitize the response to remove the status field
-    const {status, ...sanitizedResponse} = mockDocumentation;
-    expect(result).toEqual(sanitizedResponse);
+    expect(result).toEqual(sources);
   });
 
   it('should return failure string if search failed', async () => {
@@ -624,17 +624,22 @@ describe('searchDocumentation', () => {
         'Unable to process your question. Please rephrase it to be more specific.',
     };
 
-    const context = {};
+    const fetchMock = jest.spyOn(global, 'fetch').mockResolvedValueOnce({
+      ok: false,
+      status: 400,
+      json: jest.fn().mockResolvedValueOnce(mockError),
+    } as unknown as Response);
 
-    (internalStripeFetch as jest.Mock).mockResolvedValue(mockError);
+    const result = await searchDocumentation(stripe, {}, requestBody);
 
-    const result = await searchDocumentation(stripe, context, requestBody);
+    expect(fetchMock).toHaveBeenCalledWith('https://ai.stripe.com/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    });
 
-    expect(internalStripeFetch).toHaveBeenCalledWith(
-      'https://ai.stripe.com/search',
-      'POST',
-      requestBody
-    );
     expect(result).toEqual('Failed to search documentation');
   });
 });
