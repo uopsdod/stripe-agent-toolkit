@@ -113,3 +113,17 @@ export const createRefundParameters = z.object({
     .optional()
     .describe('The amount to refund in cents.'),
 });
+
+export const searchDocumentationParameters = z.object({
+  question: z
+    .string()
+    .describe(
+      'The user question about integrating with Stripe will be used to search the documentation.'
+    ),
+  language: z
+    .enum(['dotnet', 'go', 'java', 'node', 'php', 'ruby', 'python', 'curl'])
+    .optional()
+    .describe(
+      'The programming language to search for in the the documentation.'
+    ),
+});
