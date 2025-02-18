@@ -247,6 +247,7 @@ export const searchDocumentation = async (
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-Requested-With': 'fetch',
       },
       body: JSON.stringify(params),
     });
