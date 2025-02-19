@@ -41,11 +41,17 @@ Make sure to replace `YOUR_STRIPE_SECRET_KEY` with your actual Stripe secret key
 
 To debug your server, you can use the [MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector).
 
+First build the server
+
+```
+npm run build
+```
+
 Run the following command in your terminal:
 
 ```bash
 # Start MCP Inspector and server with all tools
-npx @modelcontextprotocol/inspector npx @stripe/mcp --tools=all --api-key=YOUR_STRIPE_SECRET_KEY
+npx @modelcontextprotocol/inspector node dist/index.js --tools=all --api-key=YOUR_STRIPE_SECRET_KEY
 ```
 
 ### Instructions
