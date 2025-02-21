@@ -115,7 +115,7 @@ describe('parseArgs function', () => {
         '--tools=customers.create,products.read,fake.tool',
       ];
       expect(() => parseArgs(args)).toThrow(
-        'Invalid tool: fake.tool. Accepted tools are: customers.create, customers.read, products.create, products.read, prices.create, prices.read, paymentLinks.create, invoices.create, invoices.update, invoiceItems.create, balance.read, refunds.create, documentation.read'
+        'Invalid tool: fake.tool. Accepted tools are: customers.create, customers.read, products.create, products.read, prices.create, prices.read, paymentLinks.create, invoices.create, invoices.update, invoiceItems.create, balance.read, refunds.create, paymentIntents.read, documentation.read'
       );
     });
   });
@@ -220,6 +220,9 @@ const ALL_ACTIONS = {
   },
   refunds: {
     create: true,
+  },
+  paymentIntents: {
+    read: true,
   },
   documentation: {
     read: true,
