@@ -87,6 +87,14 @@ It takes three arguments:
 - reason (str, optional): The reason for the refund.
 `;
 
+export const listPaymentIntentsPrompt = `
+This tool will list payment intents in Stripe.
+
+It takes two arguments:
+- customer (str, optional): The ID of the customer to list payment intents for.
+- limit (int, optional): The number of payment intents to return.
+`;
+
 export const searchDocumentationPrompt = `
 This tool will take in a user question about integrating with Stripe in their application, then search and retrieve relevant Stripe documentation to answer the question.
 

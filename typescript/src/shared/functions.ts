@@ -14,6 +14,7 @@ import {
   retrieveBalanceParameters,
   createRefundParameters,
   searchDocumentationParameters,
+  listPaymentIntentsParameters,
 } from './parameters';
 import type {Context} from './configuration';
 
@@ -233,6 +234,30 @@ export const createRefund = async (
     return refund;
   } catch (error) {
     return 'Failed to create refund';
+  }
+};
+
+export const listPaymentIntents = async (
+  stripe: Stripe,
+  context: Context,
+  params: z.infer<typeof listPaymentIntentsParameters>
+) => {
+  try {
+    const paymentIntents = await stripe.paymentIntents.list(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
+    return paymentIntents.data.map((paymentIntent) => ({
+      id: paymentIntent.id,
+      customer: paymentIntent.customer,
+      description: paymentIntent.description,
+      amount: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      status: paymentIntent.status,
+    }));
+  } catch (error) {
+    return 'Failed to list payment intents';
   }
 };
 

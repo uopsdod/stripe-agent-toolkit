@@ -14,6 +14,7 @@ import {
   retrieveBalancePrompt,
   createRefundPrompt,
   searchDocumentationPrompt,
+  listPaymentIntentsPrompt,
 } from './prompts';
 
 import {
@@ -30,6 +31,7 @@ import {
   retrieveBalanceParameters,
   createRefundParameters,
   searchDocumentationParameters,
+  listPaymentIntentsParameters,
 } from './parameters';
 
 export type Tool = {
@@ -174,6 +176,17 @@ const tools: Tool[] = [
     actions: {
       refunds: {
         create: true,
+      },
+    },
+  },
+  {
+    method: 'list_payment_intents',
+    name: 'List Payment Intents',
+    description: listPaymentIntentsPrompt,
+    parameters: listPaymentIntentsParameters,
+    actions: {
+      paymentIntents: {
+        read: true,
       },
     },
   },

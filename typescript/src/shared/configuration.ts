@@ -12,6 +12,7 @@ export type Object =
   | 'prices'
   | 'balance'
   | 'refunds'
+  | 'paymentIntents'
   | 'documentation';
 
 export type Permission = 'create' | 'update' | 'read';
