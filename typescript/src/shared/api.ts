@@ -13,6 +13,7 @@ import {
   retrieveBalance,
   createRefund,
   searchDocumentation,
+  listPaymentIntents,
 } from './functions';
 
 import type {Context} from './configuration';
@@ -26,7 +27,7 @@ class StripeAPI {
     const stripeClient = new Stripe(secretKey, {
       appInfo: {
         name: 'stripe-agent-toolkit-typescript',
-        version: '0.4.0',
+        version: '0.4.1',
         url: 'https://github.com/stripe/agent-toolkit',
       },
     });
@@ -114,6 +115,11 @@ class StripeAPI {
     } else if (method === 'create_refund') {
       const output = JSON.stringify(
         await createRefund(this.stripe, this.context, arg)
+      );
+      return output;
+    } else if (method === 'list_payment_intents') {
+      const output = JSON.stringify(
+        await listPaymentIntents(this.stripe, this.context, arg)
       );
       return output;
     } else if (method == 'search_documentation') {

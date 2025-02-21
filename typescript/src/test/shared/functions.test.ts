@@ -12,6 +12,7 @@ import {
   retrieveBalance,
   createRefund,
   searchDocumentation,
+  listPaymentIntents,
 } from '../../shared/functions';
 import {z} from 'zod';
 import {searchDocumentationParameters} from '../../shared/parameters';
@@ -39,6 +40,9 @@ const Stripe = jest.fn().mockImplementation(() => ({
   },
   invoiceItems: {
     create: jest.fn(),
+  },
+  paymentIntents: {
+    list: jest.fn(),
   },
   balance: {
     retrieve: jest.fn(),
@@ -568,6 +572,85 @@ describe('createRefund', () => {
       stripeAccount: context.account,
     });
     expect(result).toEqual(mockRefund);
+  });
+});
+
+describe('listPaymentIntents', () => {
+  it('should list payment intents and return them', async () => {
+    const mockPaymentIntents = [
+      {
+        id: 'pi_123456',
+        customer: 'cus_123456',
+        amount: 1000,
+        status: 'succeeded',
+        description: 'Test Payment Intent',
+      },
+    ];
+
+    const context = {};
+
+    stripe.paymentIntents.list.mockResolvedValue({data: mockPaymentIntents});
+
+    const result = await listPaymentIntents(stripe, context, {});
+
+    expect(stripe.paymentIntents.list).toHaveBeenCalledWith({}, undefined);
+    expect(result).toEqual(mockPaymentIntents);
+  });
+
+  it('should list payment intents for a specific customer', async () => {
+    const mockPaymentIntents = [
+      {
+        id: 'pi_123456',
+        customer: 'cus_123456',
+        amount: 1000,
+        status: 'succeeded',
+        description: 'Test Payment Intent',
+      },
+    ];
+
+    const context = {};
+
+    stripe.paymentIntents.list.mockResolvedValue({data: mockPaymentIntents});
+
+    const result = await listPaymentIntents(stripe, context, {
+      customer: 'cus_123456',
+    });
+
+    expect(stripe.paymentIntents.list).toHaveBeenCalledWith(
+      {
+        customer: 'cus_123456',
+      },
+      undefined
+    );
+    expect(result).toEqual(mockPaymentIntents);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const mockPaymentIntents = [
+      {
+        id: 'pi_123456',
+        customer: 'cus_123456',
+        amount: 1000,
+        status: 'succeeded',
+        description: 'Test Payment Intent',
+      },
+    ];
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.paymentIntents.list.mockResolvedValue({data: mockPaymentIntents});
+
+    const result = await listPaymentIntents(stripe, context, {});
+
+    expect(stripe.paymentIntents.list).toHaveBeenCalledWith(
+      {},
+      {
+        stripeAccount: context.account,
+      }
+    );
+    expect(result).toEqual(mockPaymentIntents);
   });
 });
 

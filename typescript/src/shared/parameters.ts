@@ -13,7 +13,7 @@ export const listCustomersParameters = z.object({
     .max(100)
     .optional()
     .describe(
-      'A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.'
+      'A limit on the number of objects to be returned. Limit can range between 1 and 100.'
     ),
   email: z
     .string()
@@ -112,6 +112,22 @@ export const createRefundParameters = z.object({
     .int()
     .optional()
     .describe('The amount to refund in cents.'),
+});
+
+export const listPaymentIntentsParameters = z.object({
+  customer: z
+    .string()
+    .optional()
+    .describe('The ID of the customer to list payment intents for.'),
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(100)
+    .optional()
+    .describe(
+      'A limit on the number of objects to be returned. Limit can range between 1 and 100.'
+    ),
 });
 
 export const searchDocumentationParameters = z.object({
