@@ -616,9 +616,12 @@ describe('listPaymentIntents', () => {
       customer: 'cus_123456',
     });
 
-    expect(stripe.paymentIntents.list).toHaveBeenCalledWith({
-      customer: 'cus_123456',
-    });
+    expect(stripe.paymentIntents.list).toHaveBeenCalledWith(
+      {
+        customer: 'cus_123456',
+      },
+      undefined
+    );
     expect(result).toEqual(mockPaymentIntents);
   });
 
