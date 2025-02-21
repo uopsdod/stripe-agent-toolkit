@@ -13,7 +13,7 @@ importers:
         version: 1.5.0
       '@stripe/agent-toolkit':
         specifier: latest
-        version: 0.4.0(@langchain/core@0.3.40)(@modelcontextprotocol/sdk@1.5.0)(ai@4.1.44(react@19.0.0)(zod@3.24.2))
+        version: 0.4.1(@langchain/core@0.3.40)(@modelcontextprotocol/sdk@1.5.0)(ai@4.1.44(react@19.0.0)(zod@3.24.2))
       colors:
         specifier: ^1.4.0
         version: 1.4.0
@@ -464,8 +464,8 @@ packages:
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
-  '@stripe/agent-toolkit@0.4.0':
-    resolution: {integrity: sha512-26Lm8mVQ/UP4W8djAShLa870PHKVhab/d2UICqz//IKEFPLOskbrXB+cRyiN+KLgfj5iQz+6SZ9bCVYNCo+uqg==}
+  '@stripe/agent-toolkit@0.4.1':
+    resolution: {integrity: sha512-z9BB7igKXQPDtzvIqz4wS8EeNMrHcashVg2W8Oltdl9v8ScvZaB+gtr7G5PED96W7QlFgSkZxJrj0+l+Nrm/4A==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': ^0.3.6
@@ -2874,7 +2874,7 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@stripe/agent-toolkit@0.4.0(@langchain/core@0.3.40)(@modelcontextprotocol/sdk@1.5.0)(ai@4.1.44(react@19.0.0)(zod@3.24.2))':
+  '@stripe/agent-toolkit@0.4.1(@langchain/core@0.3.40)(@modelcontextprotocol/sdk@1.5.0)(ai@4.1.44(react@19.0.0)(zod@3.24.2))':
     dependencies:
       '@langchain/core': 0.3.40
       '@modelcontextprotocol/sdk': 1.5.0
