@@ -239,7 +239,6 @@ main().catch((error) => {
 - [Finalize an invoice](https://docs.stripe.com/api/invoices/finalize)
 - [Retrieve balance](https://docs.stripe.com/api/balance/balance_retrieve)
 - [Create a refund](https://docs.stripe.com/api/refunds/create)
-- [List payment intents](https://docs.stripe.com/api/payment_intents/list)
 
 [python-sdk]: https://github.com/stripe/stripe-python
 [node-sdk]: https://github.com/stripe/stripe-node
