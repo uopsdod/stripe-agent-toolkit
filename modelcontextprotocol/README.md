@@ -21,21 +21,22 @@ Make sure to replace `YOUR_STRIPE_SECRET_KEY` with your actual Stripe secret key
 
 ### Available tools
 
-| Tool                  | Description                  |
-| --------------------- | ---------------------------- |
-| `customers.create`    | Create a new customer        |
-| `customers.read`      | Read customer information    |
-| `products.create`     | Create a new product         |
-| `products.read`       | Read product information     |
-| `prices.create`       | Create a new price           |
-| `prices.read`         | Read price information       |
-| `paymentLinks.create` | Create a new payment link    |
-| `invoices.create`     | Create a new invoice         |
-| `invoices.update`     | Update an existing invoice   |
-| `invoiceItems.create` | Create a new invoice item    |
-| `balance.read`        | Retrieve balance information |
-| `refunds.create`      | Create a new refund          |
-| `documentation.read`  | Search Stripe documentation  |
+| Tool                  | Description                     |
+| --------------------- | ------------------------------- |
+| `customers.create`    | Create a new customer           |
+| `customers.read`      | Read customer information       |
+| `products.create`     | Create a new product            |
+| `products.read`       | Read product information        |
+| `prices.create`       | Create a new price              |
+| `prices.read`         | Read price information          |
+| `paymentLinks.create` | Create a new payment link       |
+| `invoices.create`     | Create a new invoice            |
+| `invoices.update`     | Update an existing invoice      |
+| `invoiceItems.create` | Create a new invoice item       |
+| `balance.read`        | Retrieve balance information    |
+| `refunds.create`      | Create a new refund             |
+| `paymentIntents.read` | Read payment intent information |
+| `documentation.read`  | Search Stripe documentation     |
 
 ## Debugging the Server
 

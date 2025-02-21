@@ -33,6 +33,7 @@ const ACCEPTED_TOOLS = [
   'invoiceItems.create',
   'balance.read',
   'refunds.create',
+  'paymentIntents.read',
   'documentation.read',
 ];
 
