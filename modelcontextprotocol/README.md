@@ -2,7 +2,7 @@
 
 The Stripe [Model Context Protocol](https://modelcontextprotocol.com/) server allows you to integrate with Stripe APIs through function calling. This protocol supports various tools to interact with different Stripe services.
 
-## Running the Stripe MCP server using npx
+## Setup
 
 To run the Stripe MCP server using npx, use the following command:
 
@@ -19,7 +19,28 @@ npx -y @stripe/mcp --tools=all --api-key=YOUR_STRIPE_SECRET_KEY --stripe-account
 
 Make sure to replace `YOUR_STRIPE_SECRET_KEY` with your actual Stripe secret key. Alternatively, you could set the STRIPE_SECRET_KEY in your environment variables.
 
-### Available tools
+
+### Usage with Claude Desktop
+
+Add the following to your `claude_desktop_config.json`. See [here](https://modelcontextprotocol.io/quickstart/user) for more details.
+
+```
+{
+    “mcpServers”: {
+        “stripe”: {
+            “command”: “npx”,
+            “args”: [
+                “-y”,
+                “@stripe/mcp”,
+                “--tools=all”,
+                “--api-key=STRIPE_SECRET_KEY”
+            ]
+        }
+    }
+}
+```
+
+## Available tools
 
 | Tool                  | Description                     |
 | --------------------- | ------------------------------- |
