@@ -14,6 +14,7 @@ from stripe_agent_toolkit.functions import (
     finalize_invoice,
     retrieve_balance,
     create_refund,
+    list_payment_intents,
 )
 
 
@@ -612,6 +613,33 @@ class TestStripeFunctions(unittest.TestCase):
             )
 
             self.assertEqual(result, {"id": mock_refund["id"]})
+
+    def test_list_payment_intents(self):
+        with mock.patch("stripe.PaymentIntent.list") as mock_function:
+            mock_payment_intents = [{"id": "pi_123"}, {"id": "pi_456"}]
+            mock_function.return_value = stripe.ListObject.construct_from(
+                {"data": mock_payment_intents}, "sk_test_123"
+            )
+
+            result = list_payment_intents(context={})
+
+            mock_function.assert_called_with()
+
+            self.assertEqual(result, mock_payment_intents)
+
+    def test_list_payment_intents_with_context(self):
+        with mock.patch("stripe.PaymentIntent.list") as mock_function:
+            mock_payment_intents = [{"id": "pi_123"}, {"id": "pi_456"}]
+            mock_function.return_value = stripe.ListObject.construct_from(
+                {"data": mock_payment_intents}, "sk_test_123"
+            )
+
+            result = list_payment_intents(context={"account": "acct_123"})
+
+            mock_function.assert_called_with(stripe_account="acct_123")
+
+            self.assertEqual(result, mock_payment_intents)
+
 
 
 if __name__ == "__main__":

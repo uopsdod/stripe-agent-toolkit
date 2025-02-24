@@ -307,3 +307,26 @@ def create_refund(
                 refund_data["stripe_account"] = account
 
     return stripe.Refund.create(**refund_data)
+
+def list_payment_intents(context: Context, customer: Optional[str] = None, limit: Optional[int] = None):
+    """
+    List payment intents.
+
+    Parameters:
+        customer (str, optional): The ID of the customer to list payment intents for.
+        limit (int, optional): The number of payment intents to return.
+
+    Returns:
+        stripe.ListObject: A list of payment intents.
+    """
+    payment_intent_data: dict = {}
+    if customer:
+        payment_intent_data["customer"] = customer
+    if limit:
+        payment_intent_data["limit"] = limit
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            payment_intent_data["stripe_account"] = account
+
+    return stripe.PaymentIntent.list(**payment_intent_data).data

@@ -13,6 +13,7 @@ from .prompts import (
     FINALIZE_INVOICE_PROMPT,
     RETRIEVE_BALANCE_PROMPT,
     CREATE_REFUND_PROMPT,
+    LIST_PAYMENT_INTENTS_PROMPT,
 )
 
 from .schema import (
@@ -28,6 +29,7 @@ from .schema import (
     FinalizeInvoice,
     RetrieveBalance,
     CreateRefund,
+    ListPaymentIntents,
 )
 
 tools: List[Dict] = [
@@ -162,5 +164,11 @@ tools: List[Dict] = [
                 "create": True,
             }
         },
+    },
+    {
+        "method": "list_payment_intents",
+        "name": "List Payment Intents",
+        "description": LIST_PAYMENT_INTENTS_PROMPT,
+        "args_schema": ListPaymentIntents,
     },
 ]
