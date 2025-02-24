@@ -87,3 +87,11 @@ It takes three arguments:
 - amount (int, optional): The amount to refund in cents.
 - reason (str, optional): The reason for the refund.
 """
+
+LIST_PAYMENT_INTENTS_PROMPT = """
+This tool will list payment intents in Stripe.
+
+It takes two arguments:
+- customer (str, optional): The ID of the customer to list payment intents for.
+- limit (int, optional): The number of payment intents to return.
+"""

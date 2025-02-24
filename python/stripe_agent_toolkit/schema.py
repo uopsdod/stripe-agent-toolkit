@@ -23,7 +23,7 @@ class ListCustomers(BaseModel):
         None,
         description=(
             "A limit on the number of objects to be returned."
-            " Limit can range between 1 and 100, and the default is 10."
+            " Limit can range between 1 and 100."
         ),
     )
 
@@ -161,4 +161,19 @@ class CreateRefund(BaseModel):
     amount: Optional[int] = Field(
         ...,
         description="The amount to refund in cents.",
+    )
+
+class ListPaymentIntents(BaseModel):
+    """Schema for the ``list_payment_intents`` operation."""
+
+    customer: Optional[str] = Field(
+        None,
+        description="The ID of the customer to list payment intents for.",
+    )
+    limit: Optional[int] = Field(
+        None,
+        description=(
+            "A limit on the number of objects to be returned."
+            " Limit can range between 1 and 100."
+        ),
     )

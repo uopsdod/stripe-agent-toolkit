@@ -11,6 +11,7 @@ Object = Literal[
     "prices",
     "balance",
     "refunds",
+    "paymentIntents",
 ]
 
 
@@ -36,6 +37,7 @@ class Actions(TypedDict, total=False):
     prices: Optional[Permission]
     balance: Optional[BalancePermission]
     refunds: Optional[Permission]
+    payment_intents: Optional[Permission]
 
 
 # Define Context type
