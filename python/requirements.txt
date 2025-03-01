@@ -1,4 +1,5 @@
 twine
+openai==1.65.1
 crewai==0.76.2
 crewai-tools===0.13.2
 flake8

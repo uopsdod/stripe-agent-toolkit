@@ -21,6 +21,11 @@
       "require": "./ai-sdk/index.js",
       "import": "./ai-sdk/index.mjs"
     },
+    "./openai": {
+      "types": "./openai/index.d.ts",
+      "require": "./openai/index.js",
+      "import": "./openai/index.mjs"
+    },
     "./modelcontextprotocol": {
       "types": "./modelcontextprotocol/index.d.ts",
       "require": "./modelcontextprotocol/index.js",
@@ -56,9 +61,11 @@
   },
   "dependencies": {
     "stripe": "^17.5.0",
-    "zod": "^3.24.1"
+    "zod": "^3.24.1",
+    "zod-to-json-schema": "^3.24.3"
   },
   "peerDependencies": {
+    "openai": "^4.86.1",
     "@langchain/core": "^0.3.6",
     "@modelcontextprotocol/sdk": "^1.4.1",
     "ai": "^3.4.7 || ^4.0.0"
