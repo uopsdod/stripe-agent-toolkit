@@ -3,8 +3,8 @@ import tools from '../shared/tools';
 import {isToolAllowed, type Configuration} from '../shared/configuration';
 import {zodToJsonSchema} from 'zod-to-json-schema';
 import type {
-  ChatCompletion,
   ChatCompletionTool,
+  ChatCompletionMessageToolCall,
   ChatCompletionToolMessageParam,
 } from 'openai/resources';
 
@@ -40,37 +40,22 @@ class StripeAgentToolkit {
     return this.tools;
   }
 
-  async executeTools(completion: ChatCompletion) {
-    const toolCalls = completion.choices[0].message.tool_calls;
-
-    if (!toolCalls?.length) {
-      return {toolMessages: null, remainingToolCalls: null};
-    }
-
-    const availableTools = this.tools;
-
-    const executableToolCalls = toolCalls.filter((tc) =>
-      availableTools.find((at) => at.function.name === tc.function.name)
-    );
-    const nonExecutableToolCalls = toolCalls.filter(
-      (tc) =>
-        !availableTools.find((at) => at.function.name === tc.function.name)
-    );
-
-    const toolCallPromises = executableToolCalls.map(async (tc) => {
-      const args = JSON.parse(tc.function.arguments);
-      const response = await this._stripe.run(tc.function.name, args);
-      return {
-        role: 'tool',
-        tool_call_id: tc.id,
-        content: response,
-      } as ChatCompletionToolMessageParam;
-    });
-
+  /**
+   * Processes a single OpenAI tool call by executing the requested function.
+   *
+   * @param {ChatCompletionMessageToolCall} toolCall - The tool call object from OpenAI containing
+   *   function name, arguments, and ID.
+   * @returns {Promise<ChatCompletionToolMessageParam>} A promise that resolves to a tool message
+   *   object containing the result of the tool execution with the proper format for the OpenAI API.
+   */
+  async handleToolCall(toolCall: ChatCompletionMessageToolCall) {
+    const args = JSON.parse(toolCall.function.arguments);
+    const response = await this._stripe.run(toolCall.function.name, args);
     return {
-      toolMessages: await Promise.all(toolCallPromises),
-      remainingToolCalls: nonExecutableToolCalls,
-    };
+      role: 'tool',
+      tool_call_id: toolCall.id,
+      content: response,
+    } as ChatCompletionToolMessageParam;
   }
 }
 

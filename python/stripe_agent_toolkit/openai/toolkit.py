@@ -41,34 +41,27 @@ class StripeAgentToolkit:
     def get_tools(self) -> List[ChatCompletionToolParam]:
         """Get the tools in the toolkit."""
         return self._tools
-
-    def execute_tools(self, completion: ChatCompletion):
-        tool_calls = completion.choices[0].message.tool_calls
+    
+    def handle_tool_call(self, tool_call: ChatCompletionMessageToolCall) -> ChatCompletionToolMessageParam:
+        """Process a single OpenAI tool call and return its execution result.
         
-        if not tool_calls:
-            return None, None
+        This method takes a tool call object, extracts and parses its arguments, 
+        executes the corresponding API function, and formats the response
+        as a tool message for the chat completion.
         
-        available_tools = self.get_tools()
-        
-        executable_tool_calls = [
-            tc for tc in tool_calls 
-            if any(at["function"]["name"] == tc.function.name for at in available_tools)
-        ]
-        
-        non_executable_tool_calls = [
-            tc for tc in tool_calls 
-            if not any(at["function"]["name"] == tc.function.name for at in available_tools)
-        ]
-        
-        def process_tool_call(tc: ChatCompletionMessageToolCall) -> ChatCompletionToolMessageParam:
-            args = json.loads(tc.function.arguments)
-            response = self._stripe_api.run(tc.function.name, **args)
-            return {
-                "role": "tool",
-                "tool_call_id": tc.id,
-                "content": response
-            }
-        
-        tool_messages = [process_tool_call(tc) for tc in executable_tool_calls]
-        
-        return tool_messages, non_executable_tool_calls
+        Args:
+            tool_call: A ChatCompletionMessageToolCall object containing the function
+                    name and arguments to be executed.
+                    
+        Returns:
+            A dictionary containing the tool execution result in the format
+            required by the chat completion API, including role, tool_call_id,
+            and content fields.
+        """
+        args = json.loads(tool_call.function.arguments)
+        response = self._stripe_api.run(tool_call.function.name, **args)
+        return {
+            "role": "tool",
+            "tool_call_id": tool_call.id,
+            "content": response
+        }

@@ -41,13 +41,15 @@ maybe a haiku.`,
       tools: stripeAgentToolkit.getTools(),
     });
 
-    messages.push(completion.choices[0].message);
+    const message = completion.choices[0].message;
 
-    const {toolMessages, remainingToolCalls} =
+    messages.push(message);
+
+    if (message.tool_calls) {
       // eslint-disable-next-line no-await-in-loop
-      await stripeAgentToolkit.executeTools(completion);
-
-    if (toolMessages) {
+      const toolMessages = await Promise.all(
+        message.tool_calls.map((tc) => stripeAgentToolkit.handleToolCall(tc))
+      );
       messages = [...messages, ...toolMessages];
     } else {
       console.log(completion.choices[0].message);

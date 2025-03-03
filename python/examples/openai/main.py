@@ -41,11 +41,11 @@ while True:
         tools=stripe_agent_toolkit.get_tools()
     )
 
-    messages.append(completion.choices[0].message)
-
-    tool_messages, remaining_tool_calls = stripe_agent_toolkit.execute_tools(completion)
-
-    if tool_messages:
+    message = completion.choices[0].message
+    messages.append(message)
+    
+    if message.tool_calls:
+        tool_messages = [stripe_agent_toolkit.handle_tool_call(tc) for tc in message.tool_calls]
         messages.extend(tool_messages)
     else:
         print(completion.choices[0].message)
