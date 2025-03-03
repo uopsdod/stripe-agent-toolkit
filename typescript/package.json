@@ -4,7 +4,7 @@
   "homepage": "https://github.com/stripe/agent-toolkit",
   "scripts": {
     "build": "tsup",
-    "clean": "rm -rf langchain ai-sdk modelcontextprotocol",
+    "clean": "rm -rf langchain ai-sdk modelcontextprotocol openai",
     "lint": "eslint \"./**/*.ts*\"",
     "prettier": "prettier './**/*.{js,ts,md,html,css}' --write",
     "prettier-check": "prettier './**/*.{js,ts,md,html,css}' --check",
