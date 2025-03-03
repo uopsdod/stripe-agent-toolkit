@@ -52,7 +52,7 @@ class Configuration(TypedDict, total=False):
 
 
 def is_tool_allowed(tool, configuration):
-    for resource, permissions in tool.get("actions").items():
+    for resource, permissions in tool.get("actions", {}).items():
         if resource not in configuration.get("actions", {}):
             return False
         for permission in permissions:
