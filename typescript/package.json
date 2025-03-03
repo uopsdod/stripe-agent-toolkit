@@ -78,6 +78,7 @@
     "ai-sdk/**/*",
     "langchain/**/*",
     "modelcontextprotocol/**/*",
+    "openai/**/*",
     "LICENSE",
     "README.md",
     "VERSION",
