@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run": "tsx test.ts"
+    "run": "tsx eval.ts"
   },
   "keywords": [],
   "author": "",

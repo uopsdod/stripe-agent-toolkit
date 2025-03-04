@@ -3,7 +3,7 @@ require("dotenv").config();
 import { ClosedQA } from "autoevals";
 import get from "lodash/get";
 import every from "lodash/every";
-import { openai } from "./test";
+import { openai } from "./eval";
 
 /**
  * Uses an LLM call to classify if a substring is semantically contained in a text.
@@ -49,8 +49,6 @@ export type Assertion = {
   path: string;
   assertion_type: AssertionTypes;
   value: string;
-  //   expected_tool_sequence: string[];
-  //   expected_final_response_contains: string[];
 };
 
 export const AssertionScorer = async ({
@@ -97,7 +95,6 @@ export const AssertionScorer = async ({
             openAiApiKey: "EMPTY",
             openAiBaseUrl: process.env.OPENAI_BASE_URL,
           });
-          console.log({ closedQA });
           passedTest = !!closedQA.score && closedQA.score > 0.5;
           break;
         case "semantic_contains":
@@ -107,7 +104,7 @@ export const AssertionScorer = async ({
           });
           break;
         default:
-          assertion_type satisfies never; // if you see a ts error here, its because your switch is not exhaustive
+          assertion_type satisfies never;
           throw new Error(`unknown assertion type ${assertion_type}`);
       }
     } catch (e) {

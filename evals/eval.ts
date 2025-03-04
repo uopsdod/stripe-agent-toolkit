@@ -4,7 +4,8 @@ import { StripeAgentToolkit } from "../typescript/src/openai";
 import OpenAI from "openai";
 import type { ChatCompletionMessageParam } from "openai/resources";
 import { Eval, wrapOpenAI } from "braintrust";
-import { Assertion, AssertionScorer } from "./scorer";
+import { AssertionScorer } from "./scorer";
+import { TEST_CASES } from "./cases";
 
 // This wrap function adds useful tracing in Braintrust
 export const openai = wrapOpenAI(
@@ -20,12 +21,19 @@ const stripeAgentToolkit = new StripeAgentToolkit({
     actions: {
       paymentLinks: {
         create: true,
+        read: true,
       },
       products: {
         create: true,
+        read: true,
       },
       prices: {
         create: true,
+        read: true,
+      },
+      customers: {
+        create: true,
+        read: true,
       },
     },
   },
@@ -63,7 +71,6 @@ async function task(input: string) {
 
       messages = [...messages, ...toolMessages];
     } else {
-      console.log(completion.choices[0].message);
       break;
     }
   }
@@ -74,139 +81,17 @@ async function task(input: string) {
   };
 }
 
-// Define test cases
-const testCases: {
-  input: string;
-  expected: Assertion[];
-}[] = [
-  {
-    input:
-      "Create a product called 'Test Product' with a description 'A test product for evaluation'",
-    expected: [
-      {
-        path: "messages[1].tool_calls[0].function.name",
-        assertion_type: "equals",
-        value: "create_product",
-      },
-      {
-        path: "responseChatCompletions[0].content",
-        assertion_type: "llm_criteria_met",
-        value:
-          "The message should include a successful product creation response",
-      },
-    ],
-  },
-  {
-    input: "Create a price of $100 USD for a product you just created",
-    expected: [
-      {
-        path: "messages[3].tool_calls[0].function.name",
-        assertion_type: "equals",
-        value: "create_price",
-      },
-      {
-        path: "messages",
-        assertion_type: "llm_criteria_met",
-        value:
-          "The messages should include a successful price creation response",
-      },
-    ],
-  },
-  {
-    input: "Create a payment link",
-    expected: [
-      {
-        path: "messages[1].tool_calls[5].function.name",
-        assertion_type: "equals",
-        value: "create_payment_link",
-      },
-      {
-        path: "responseChatCompletions[0].content",
-        assertion_type: "semantic_contains",
-        value: "payment link",
-      },
-    ],
-  },
-  {
-    input: "List all available products",
-    expected: [
-      {
-        path: "messages[1].tool_calls[0].function.name",
-        assertion_type: "equals",
-        value: "list_products",
-      },
-      {
-        path: "messages",
-        assertion_type: "llm_criteria_met",
-        value:
-          "The messages should include a list of products returned from the Stripe API",
-      },
-    ],
-  },
-  {
-    input:
-      "Create a customer named 'Test Customer' with email 'test@example.com'",
-    expected: [
-      {
-        path: "messages[1].tool_calls[0].function.name",
-        assertion_type: "equals",
-        value: "create_customer",
-      },
-      {
-        path: "messages",
-        assertion_type: "llm_criteria_met",
-        value:
-          "The messages should include a successful customer creation response",
-      },
-    ],
-  },
-  {
-    input:
-      "Create a payment link for a new product called 'test' with a price of $100. Come up with a funny description about buy bots, maybe a haiku.",
-    expected: [
-      {
-        path: "messages",
-        assertion_type: "llm_criteria_met",
-        value:
-          "The messages should include a sequence of: product creation, price creation, and payment link creation",
-      },
-      {
-        path: "responseChatCompletions[0].content",
-        assertion_type: "semantic_contains",
-        value: "payment link",
-      },
-      {
-        path: "responseChatCompletions[0].content",
-        assertion_type: "semantic_contains",
-        value: "haiku",
-      },
-    ],
-  },
-];
+const BRAINTRUST_PROJECT = "agent-toolkit";
 
-async function runEvaluation() {
-  console.log("Starting evaluation...");
-
-  await Eval("agent-toolkit", {
-    data: testCases,
+async function main() {
+  await Eval(BRAINTRUST_PROJECT, {
+    data: TEST_CASES,
     task: async (input) => {
       const result = await task(input);
       return result;
     },
     scores: [AssertionScorer],
   });
-}
-
-// Modify the main function to run the eval
-async function main() {
-  // Uncomment to run a single test
-  // const s = await task(
-  //   "Create a payment link for a new product called 'test' with a price of $100. Come up with a funny description about buy bots, maybe a haiku."
-  // );
-  // console.log(JSON.stringify(s, null, 2));
-
-  // Run the evaluation
-  await runEvaluation();
 }
 
 main();
