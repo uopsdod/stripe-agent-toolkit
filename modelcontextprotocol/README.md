@@ -25,17 +25,17 @@ Add the following to your `claude_desktop_config.json`. See [here](https://model
 
 ```
 {
-    “mcpServers”: {
-        “stripe”: {
-            “command”: “npx”,
-            “args”: [
-                “-y”,
-                “@stripe/mcp”,
-                “--tools=all”,
-                “--api-key=STRIPE_SECRET_KEY”
-            ]
-        }
+  "mcpServers": {
+    "stripe": {
+      "command": "npx",
+      "args": [
+          "-y",
+          "@stripe/mcp",
+          "--tools=all",
+          "--api-key=STRIPE_SECRET_KEY"
+      ]
     }
+  }
 }
 ```
 
