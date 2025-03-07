@@ -174,6 +174,6 @@ tools: List[Dict] = [
             "payment_intents": {
                 "read": True,
             }
-        }
+        },
     },
 ]
