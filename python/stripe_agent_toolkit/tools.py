@@ -170,5 +170,10 @@ tools: List[Dict] = [
         "name": "List Payment Intents",
         "description": LIST_PAYMENT_INTENTS_PROMPT,
         "args_schema": ListPaymentIntents,
+        "actions": {
+            "payment_intents": {
+                "read": True,
+            }
+        }
     },
 ]
