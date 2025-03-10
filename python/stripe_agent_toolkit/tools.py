@@ -8,12 +8,14 @@ from .prompts import (
     CREATE_PRICE_PROMPT,
     LIST_PRICES_PROMPT,
     CREATE_PAYMENT_LINK_PROMPT,
+    LIST_INVOICES_PROMPT,
     CREATE_INVOICE_PROMPT,
     CREATE_INVOICE_ITEM_PROMPT,
     FINALIZE_INVOICE_PROMPT,
     RETRIEVE_BALANCE_PROMPT,
     CREATE_REFUND_PROMPT,
     LIST_PAYMENT_INTENTS_PROMPT,
+    CREATE_BILLING_PORTAL_SESSION_PROMPT,
 )
 
 from .schema import (
@@ -24,12 +26,14 @@ from .schema import (
     CreatePrice,
     ListPrices,
     CreatePaymentLink,
+    ListInvoices,
     CreateInvoice,
     CreateInvoiceItem,
     FinalizeInvoice,
     RetrieveBalance,
     CreateRefund,
     ListPaymentIntents,
+    CreateBillingPortalSession,
 )
 
 tools: List[Dict] = [
@@ -111,6 +115,17 @@ tools: List[Dict] = [
         },
     },
     {
+        "method": "list_invoices",
+        "name": "List Invoices",
+        "description": LIST_INVOICES_PROMPT,
+        "args_schema": ListInvoices,
+        "actions": {
+            "invoices": {
+                "read": True,
+            }
+        },
+    },
+    {
         "method": "create_invoice",
         "name": "Create Invoice",
         "description": CREATE_INVOICE_PROMPT,
@@ -173,6 +188,17 @@ tools: List[Dict] = [
         "actions": {
             "payment_intents": {
                 "read": True,
+            }
+        },
+    },
+    {
+        "method": "create_billing_portal_session",
+        "name": "Create Billing Portal Session",
+        "description": CREATE_BILLING_PORTAL_SESSION_PROMPT,
+        "args_schema": CreateBillingPortalSession,
+        "actions": {
+            "billing_portal_sessions": {
+                "create": True,
             }
         },
     },

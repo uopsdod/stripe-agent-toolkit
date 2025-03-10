@@ -38,6 +38,7 @@ class Actions(TypedDict, total=False):
     balance: Optional[BalancePermission]
     refunds: Optional[Permission]
     payment_intents: Optional[Permission]
+    billing_portal_sessions: Optional[Permission]
 
 
 # Define Context type

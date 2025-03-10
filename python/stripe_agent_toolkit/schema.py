@@ -106,6 +106,22 @@ class CreatePaymentLink(BaseModel):
     )
 
 
+class ListInvoices(BaseModel):
+    """Schema for the ``list_invoices`` operation."""
+
+    customer: Optional[str] = Field(
+        None,
+        description="The ID of the customer to list invoices for.",
+    )
+    limit: Optional[int] = Field(
+        None,
+        description=(
+            "A limit on the number of objects to be returned."
+            " Limit can range between 1 and 100, and the default is 10."
+        ),
+    )
+
+
 class CreateInvoice(BaseModel):
     """Schema for the ``create_invoice`` operation."""
 
@@ -175,5 +191,19 @@ class ListPaymentIntents(BaseModel):
         description=(
             "A limit on the number of objects to be returned."
             " Limit can range between 1 and 100."
+        ),
+    )
+
+class CreateBillingPortalSession(BaseModel):
+    """Schema for the ``create_billing_portal_session`` operation."""
+
+    customer: str = Field(
+        None,
+        description="The ID of the customer to create the billing portal session for.",
+    )
+    return_url: Optional[str] = Field(
+        None,
+        description=(
+            "The default URL to return to afterwards."
         ),
     )

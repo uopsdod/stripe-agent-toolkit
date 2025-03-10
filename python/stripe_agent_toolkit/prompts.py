@@ -53,6 +53,14 @@ It takes two arguments:
 - quantity (int): The quantity of the product to include in the payment link.
 """
 
+LIST_INVOICES_PROMPT = """
+This tool will list invoices in Stripe.
+
+It takes two arguments:
+- customer (str, optional): The ID of the customer to list the invoices for.
+- limit (int, optional): The number of prices to return.
+"""
+
 CREATE_INVOICE_PROMPT = """
 This tool will create an invoice in Stripe.
 
@@ -94,4 +102,12 @@ This tool will list payment intents in Stripe.
 It takes two arguments:
 - customer (str, optional): The ID of the customer to list payment intents for.
 - limit (int, optional): The number of payment intents to return.
+"""
+
+CREATE_BILLING_PORTAL_SESSION_PROMPT = """
+This tool will create a billing portal session.
+
+It takes two arguments:
+- customer (str): The ID of the customer to create the invoice item for.
+- return_url (str, optional): The default URL to return to afterwards.
 """

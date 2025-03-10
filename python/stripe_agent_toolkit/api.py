@@ -17,12 +17,14 @@ from .functions import (
     create_price,
     list_prices,
     create_payment_link,
+    list_invoices,
     create_invoice,
     create_invoice_item,
     finalize_invoice,
     retrieve_balance,
     create_refund,
     list_payment_intents,
+    create_billing_portal_session,
 )
 
 
@@ -60,6 +62,8 @@ class StripeAPI(BaseModel):
             return json.dumps(
                 create_payment_link(self._context, *args, **kwargs)
             )
+        elif method == "list_invoices":
+            return json.dumps(list_invoices(self._context, *args, **kwargs))
         elif method == "create_invoice":
             return json.dumps(create_invoice(self._context, *args, **kwargs))
         elif method == "create_invoice_item":
@@ -75,6 +79,10 @@ class StripeAPI(BaseModel):
         elif method == "list_payment_intents":
             return json.dumps(
                 list_payment_intents(self._context, *args, **kwargs)
+            )
+        elif method == "create_billing_portal_session":
+            return json.dumps(
+                create_billing_portal_session(self._context, *args, **kwargs)
             )
         else:
             raise ValueError("Invalid method " + method)

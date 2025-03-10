@@ -178,6 +178,34 @@ def create_payment_link(context: Context, price: str, quantity: int):
     return {"id": payment_link.id, "url": payment_link.url}
 
 
+def list_invoices(
+    context: Context,
+    customer: Optional[str] = None,
+    limit: Optional[int] = None,
+):
+    """
+    List invoices.
+
+    Parameters:
+        customer (str, optional): The ID of the customer.
+        limit (int, optional): The number of invoices to return.
+
+    Returns:
+        stripe.ListObject: A list of invoices.
+    """
+    invoice_data: dict = {}
+    if customer:
+        invoice_data["customer"] = customer
+    if limit:
+        invoice_data["limit"] = limit
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            invoice_data["stripe_account"] = account
+
+    return stripe.Invoice.list(**invoice_data).data
+
+
 def create_invoice(context: Context, customer: str, days_until_due: int = 30):
     """
     Create an invoice.
@@ -330,3 +358,32 @@ def list_payment_intents(context: Context, customer: Optional[str] = None, limit
             payment_intent_data["stripe_account"] = account
 
     return stripe.PaymentIntent.list(**payment_intent_data).data
+
+def create_billing_portal_session(context: Context, customer: str, return_url: Optional[str] = None):
+    """
+    Creates a session of the customer portal.
+
+    Parameters:
+        customer (str): The ID of the customer to list payment intents for.
+        return_url (str, optional): The URL to return to after the session is complete.
+
+    Returns:
+        stripe.BillingPortalSession: The created billing portal session.
+    """
+    billing_portal_session_data: dict = {
+        "customer": customer,
+    }
+    if return_url:
+        billing_portal_session_data["return_url"] = return_url
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            billing_portal_session_data["stripe_account"] = account
+
+    session_object = stripe.billing_portal.Session.create(**billing_portal_session_data)
+
+    return {
+        "id": session_object.id,
+        "customer": session_object.customer,
+        "url": session_object.url,
+    }
