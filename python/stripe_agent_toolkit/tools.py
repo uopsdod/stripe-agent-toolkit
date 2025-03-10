@@ -8,6 +8,7 @@ from .prompts import (
     CREATE_PRICE_PROMPT,
     LIST_PRICES_PROMPT,
     CREATE_PAYMENT_LINK_PROMPT,
+    LIST_INVOICES_PROMPT,
     CREATE_INVOICE_PROMPT,
     CREATE_INVOICE_ITEM_PROMPT,
     FINALIZE_INVOICE_PROMPT,
@@ -24,6 +25,7 @@ from .schema import (
     CreatePrice,
     ListPrices,
     CreatePaymentLink,
+    ListInvoices,
     CreateInvoice,
     CreateInvoiceItem,
     FinalizeInvoice,
@@ -107,6 +109,17 @@ tools: List[Dict] = [
         "actions": {
             "payment_links": {
                 "create": True,
+            }
+        },
+    },
+    {
+        "method": "list_invoices",
+        "name": "List Invoices",
+        "description": LIST_INVOICES_PROMPT,
+        "args_schema": ListInvoices,
+        "actions": {
+            "invoices": {
+                "read": True,
             }
         },
     },

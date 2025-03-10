@@ -106,6 +106,21 @@ class CreatePaymentLink(BaseModel):
     )
 
 
+class ListInvoices(BaseModel):
+    """Schema for the ``list_invoices`` operation."""
+
+    customer: str = Field(
+        ..., description="The ID of the customer to list invoices for."
+    )
+    limit: Optional[int] = Field(
+        None,
+        description=(
+            "A limit on the number of objects to be returned."
+            " Limit can range between 1 and 100, and the default is 10."
+        ),
+    )
+
+
 class CreateInvoice(BaseModel):
     """Schema for the ``create_invoice`` operation."""
 

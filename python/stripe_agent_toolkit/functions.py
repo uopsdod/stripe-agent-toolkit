@@ -178,6 +178,34 @@ def create_payment_link(context: Context, price: str, quantity: int):
     return {"id": payment_link.id, "url": payment_link.url}
 
 
+def list_invoices(
+    context: Context,
+    customer: str,
+    limit: Optional[int] = None,
+):
+    """
+    List invoices.
+
+    Parameters:
+        customer (str): The ID of the customer.
+        limit (int, optional): The number of invoices to return.
+
+    Returns:
+        stripe.ListObject: A list of invoices.
+    """
+    invoice_data: dict = {
+        "customer": customer,
+    }
+    if limit:
+        invoice_data["limit"] = limit
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            invoice_data["stripe_account"] = account
+
+    return stripe.Invoice.list(**invoice_data).data
+
+
 def create_invoice(context: Context, customer: str, days_until_due: int = 30):
     """
     Create an invoice.

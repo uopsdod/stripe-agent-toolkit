@@ -17,6 +17,7 @@ from .functions import (
     create_price,
     list_prices,
     create_payment_link,
+    list_invoices,
     create_invoice,
     create_invoice_item,
     finalize_invoice,
@@ -60,6 +61,8 @@ class StripeAPI(BaseModel):
             return json.dumps(
                 create_payment_link(self._context, *args, **kwargs)
             )
+        elif method == "list_invoices":
+            return json.dumps(list_invoices(self._context, *args, **kwargs))
         elif method == "create_invoice":
             return json.dumps(create_invoice(self._context, *args, **kwargs))
         elif method == "create_invoice_item":
