@@ -109,8 +109,9 @@ class CreatePaymentLink(BaseModel):
 class ListInvoices(BaseModel):
     """Schema for the ``list_invoices`` operation."""
 
-    customer: str = Field(
-        ..., description="The ID of the customer to list invoices for."
+    customer: Optional[str] = Field(
+        None,
+        description="The ID of the customer to list invoices for.",
     )
     limit: Optional[int] = Field(
         None,

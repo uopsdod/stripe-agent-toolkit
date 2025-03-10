@@ -180,22 +180,22 @@ def create_payment_link(context: Context, price: str, quantity: int):
 
 def list_invoices(
     context: Context,
-    customer: str,
+    customer: Optional[str] = None,
     limit: Optional[int] = None,
 ):
     """
     List invoices.
 
     Parameters:
-        customer (str): The ID of the customer.
+        customer (str, optional): The ID of the customer.
         limit (int, optional): The number of invoices to return.
 
     Returns:
         stripe.ListObject: A list of invoices.
     """
-    invoice_data: dict = {
-        "customer": customer,
-    }
+    invoice_data: dict = {}
+    if customer:
+        invoice_data["customer"] = customer
     if limit:
         invoice_data["limit"] = limit
     if context.get("account") is not None:

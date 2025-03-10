@@ -385,10 +385,93 @@ class TestStripeFunctions(unittest.TestCase):
                 mock_invoices, "sk_test_123"
             )
 
+            result = list_invoices(context={})
+
+            mock_function.assert_called_with()
+
+            self.assertEqual(
+                result,
+                [
+                    {
+                        "id": mock_invoice["id"],
+                        "hosted_invoice_url": mock_invoice["hosted_invoice_url"],
+                        "customer": mock_invoice["customer"],
+                        "status": mock_invoice["status"],
+                    }
+                ],
+            )
+
+    def test_list_invoices_with_customer(self):
+        with mock.patch("stripe.Invoice.list") as mock_function:
+            mock_invoice = {
+                "id": "in_123",
+                "hosted_invoice_url": "https://example.com",
+                "customer": "cus_123",
+                "status": "open",
+            }
+            mock_invoices = {
+                "object": "list",
+                "data": [
+                    stripe.Invoice.construct_from(
+                        mock_invoice,
+                        "sk_test_123",
+                    ),
+                ],
+                "has_more": False,
+                "url": "/v1/invoices",
+            }
+
+            mock_function.return_value = stripe.Invoice.construct_from(
+                mock_invoices, "sk_test_123"
+            )
+
             result = list_invoices(context={}, customer="cus_123")
 
             mock_function.assert_called_with(
                 customer="cus_123",
+            )
+
+            self.assertEqual(
+                result,
+                [
+                    {
+                        "id": mock_invoice["id"],
+                        "hosted_invoice_url": mock_invoice["hosted_invoice_url"],
+                        "customer": mock_invoice["customer"],
+                        "status": mock_invoice["status"],
+                    }
+                ],
+            )
+
+    def test_list_invoices_with_customer_and_limit(self):
+        with mock.patch("stripe.Invoice.list") as mock_function:
+            mock_invoice = {
+                "id": "in_123",
+                "hosted_invoice_url": "https://example.com",
+                "customer": "cus_123",
+                "status": "open",
+            }
+            mock_invoices = {
+                "object": "list",
+                "data": [
+                    stripe.Invoice.construct_from(
+                        mock_invoice,
+                        "sk_test_123",
+                    ),
+                ],
+                "has_more": False,
+                "url": "/v1/invoices",
+            }
+
+            mock_function.return_value = stripe.Invoice.construct_from(
+                mock_invoices, "sk_test_123"
+            )
+
+            result = list_invoices(context={}, customer="cus_123", limit=100)
+
+            mock_function.assert_called_with(
+                customer="cus_123",
+                limit=100,
             )
 
             self.assertEqual(
