@@ -192,3 +192,17 @@ class ListPaymentIntents(BaseModel):
             " Limit can range between 1 and 100."
         ),
     )
+
+class CreateBillingPortalSession(BaseModel):
+    """Schema for the ``create_billing_portal_session`` operation."""
+
+    customer: str = Field(
+        None,
+        description="The ID of the customer to create the billing portal session for.",
+    )
+    return_url: Optional[str] = Field(
+        None,
+        description=(
+            "The default URL to return to afterwards."
+        ),
+    )

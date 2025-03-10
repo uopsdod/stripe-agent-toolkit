@@ -358,3 +358,32 @@ def list_payment_intents(context: Context, customer: Optional[str] = None, limit
             payment_intent_data["stripe_account"] = account
 
     return stripe.PaymentIntent.list(**payment_intent_data).data
+
+def create_billing_portal_session(context: Context, customer: str, return_url: Optional[str] = None):
+    """
+    Creates a session of the customer portal.
+
+    Parameters:
+        customer (str): The ID of the customer to list payment intents for.
+        return_url (str, optional): The URL to return to after the session is complete.
+
+    Returns:
+        stripe.BillingPortalSession: The created billing portal session.
+    """
+    billing_portal_session_data: dict = {
+        "customer": customer,
+    }
+    if return_url:
+        billing_portal_session_data["return_url"] = return_url
+    if context.get("account") is not None:
+        account = context.get("account")
+        if account is not None:
+            billing_portal_session_data["stripe_account"] = account
+
+    session_object = stripe.billing_portal.Session.create(**billing_portal_session_data)
+
+    return {
+        "id": session_object.id,
+        "customer": session_object.customer,
+        "url": session_object.url,
+    }

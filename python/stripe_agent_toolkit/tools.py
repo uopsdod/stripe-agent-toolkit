@@ -15,6 +15,7 @@ from .prompts import (
     RETRIEVE_BALANCE_PROMPT,
     CREATE_REFUND_PROMPT,
     LIST_PAYMENT_INTENTS_PROMPT,
+    CREATE_BILLING_PORTAL_SESSION_PROMPT,
 )
 
 from .schema import (
@@ -32,6 +33,7 @@ from .schema import (
     RetrieveBalance,
     CreateRefund,
     ListPaymentIntents,
+    CreateBillingPortalSession,
 )
 
 tools: List[Dict] = [
@@ -186,6 +188,17 @@ tools: List[Dict] = [
         "actions": {
             "payment_intents": {
                 "read": True,
+            }
+        },
+    },
+    {
+        "method": "create_billing_portal_session",
+        "name": "Create Billing Portal Session",
+        "description": CREATE_BILLING_PORTAL_SESSION_PROMPT,
+        "args_schema": CreateBillingPortalSession,
+        "actions": {
+            "billing_portal_sessions": {
+                "create": True,
             }
         },
     },

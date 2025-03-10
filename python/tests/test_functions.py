@@ -16,6 +16,7 @@ from stripe_agent_toolkit.functions import (
     retrieve_balance,
     create_refund,
     list_payment_intents,
+    create_billing_portal_session,
 )
 
 
@@ -727,6 +728,86 @@ class TestStripeFunctions(unittest.TestCase):
             self.assertEqual(result, mock_payment_intents)
 
 
+    def test_create_billing_portal_session(self):
+        with mock.patch("stripe.billing_portal.Session.create") as mock_function:
+            mock_billing_portal_session = {
+                "id": "bps_123",
+                "url": "https://example.com",
+                "customer": "cus_123",
+                "configuration": "bpc_123",
+            }
+            mock_function.return_value = stripe.billing_portal.Session.construct_from(
+                mock_billing_portal_session, "sk_test_123"
+            )
+
+            result = create_billing_portal_session(context={}, customer="cus_123")
+
+            mock_function.assert_called_with(customer="cus_123")
+
+            self.assertEqual(result, {
+                "id": mock_billing_portal_session["id"],
+                "url": mock_billing_portal_session["url"],
+                "customer": mock_billing_portal_session["customer"],
+            })
+
+    def test_create_billing_portal_session_with_return_url(self):
+        with mock.patch("stripe.billing_portal.Session.create") as mock_function:
+            mock_billing_portal_session = {
+                "id": "bps_123",
+                "url": "https://example.com",
+                "customer": "cus_123",
+                "configuration": "bpc_123",
+            }
+            mock_function.return_value = stripe.billing_portal.Session.construct_from(
+                mock_billing_portal_session, "sk_test_123"
+            )
+
+            result = create_billing_portal_session(
+                context={},
+                customer="cus_123",
+                return_url="http://example.com"
+            )
+
+            mock_function.assert_called_with(
+                customer="cus_123",
+                return_url="http://example.com",
+            )
+
+            self.assertEqual(result, {
+                "id": mock_billing_portal_session["id"],
+                "url": mock_billing_portal_session["url"],
+                "customer": mock_billing_portal_session["customer"],
+            })
+
+    def test_create_billing_portal_session_with_context(self):
+        with mock.patch("stripe.billing_portal.Session.create") as mock_function:
+            mock_billing_portal_session = {
+                "id": "bps_123",
+                "url": "https://example.com",
+                "customer": "cus_123",
+                "configuration": "bpc_123",
+            }
+            mock_function.return_value = stripe.billing_portal.Session.construct_from(
+                mock_billing_portal_session, "sk_test_123"
+            )
+
+            result = create_billing_portal_session(
+                context={"account": "acct_123"},
+                customer="cus_123",
+                return_url="http://example.com"
+            )
+
+            mock_function.assert_called_with(
+                customer="cus_123",
+                return_url="http://example.com",
+                stripe_account="acct_123"
+            )
+
+            self.assertEqual(result, {
+                "id": mock_billing_portal_session["id"],
+                "url": mock_billing_portal_session["url"],
+                "customer": mock_billing_portal_session["customer"],
+            })
 
 if __name__ == "__main__":
     unittest.main()

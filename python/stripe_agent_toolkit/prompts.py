@@ -103,3 +103,11 @@ It takes two arguments:
 - customer (str, optional): The ID of the customer to list payment intents for.
 - limit (int, optional): The number of payment intents to return.
 """
+
+CREATE_BILLING_PORTAL_SESSION_PROMPT = """
+This tool will create a billing portal session.
+
+It takes two arguments:
+- customer (str): The ID of the customer to create the invoice item for.
+- return_url (str, optional): The default URL to return to afterwards.
+"""

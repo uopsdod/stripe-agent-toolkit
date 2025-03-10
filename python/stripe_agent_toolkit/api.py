@@ -24,6 +24,7 @@ from .functions import (
     retrieve_balance,
     create_refund,
     list_payment_intents,
+    create_billing_portal_session,
 )
 
 
@@ -78,6 +79,10 @@ class StripeAPI(BaseModel):
         elif method == "list_payment_intents":
             return json.dumps(
                 list_payment_intents(self._context, *args, **kwargs)
+            )
+        elif method == "create_billing_portal_session":
+            return json.dumps(
+                create_billing_portal_session(self._context, *args, **kwargs)
             )
         else:
             raise ValueError("Invalid method " + method)
