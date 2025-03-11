@@ -1,12 +1,9 @@
-# pyright: strict
-
-from agents import Agent, Runner, function_tool, TInputItem, RunResult
+import env
+from agents import Agent, Runner, function_tool, TResponseInputItem, RunResult
 from stripe_agent_toolkit.openai.toolkit import StripeAgentToolkit
 import requests
-import env
 
 env.ensure("OPENAI_API_KEY")
-
 
 stripe_agent_toolkit = StripeAgentToolkit(
     secret_key=env.ensure("STRIPE_SECRET_KEY"),
@@ -48,5 +45,5 @@ support_agent = Agent(
 )
 
 
-async def run(input: list[TInputItem]) -> RunResult:
+async def run(input: list[TResponseInputItem]) -> RunResult:
     return await Runner.run(support_agent, input)
