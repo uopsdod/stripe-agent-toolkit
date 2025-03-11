@@ -1,6 +1,6 @@
 [project]
 name = "stripe-agent-toolkit"
-version = "0.5.2"
+version = "0.5.3"
 description = "Stripe Agent Toolkit"
 readme = "README.md"
 license = {file = "LICENSE"}
