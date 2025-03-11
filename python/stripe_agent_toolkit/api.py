@@ -41,9 +41,26 @@ class StripeAPI(BaseModel):
         stripe.api_key = secret_key
         stripe.set_app_info(
             "stripe-agent-toolkit-python",
-            version="0.5.3",
+            version="0.6.0",
             url="https://github.com/stripe/agent-toolkit",
         )
+
+    def create_meter_event(self, event: str, customer: str, value: Optional[str] = None) -> str:
+        meter_event_data: dict = {
+            "event_name": event,
+            "payload": {
+                "stripe_customer_id": customer,
+            },
+        }
+        if value is not None:
+            meter_event_data["payload"]["value"] = value
+
+        if self._context.get("account") is not None:
+            account = self._context.get("account")
+            if account is not None:
+                meter_event_data["stripe_account"] = account
+
+        stripe.billing.MeterEvent.create(**meter_event_data)
 
     def run(self, method: str, *args, **kwargs) -> str:
         if method == "create_customer":

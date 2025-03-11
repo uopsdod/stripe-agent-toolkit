@@ -1,7 +1,6 @@
 # Stripe Agent Toolkit
 
-The Stripe Agent Toolkit enables popular agent frameworks including LangChain,
-CrewAI, Vercel's AI SDK, and Model Context Protocol (MCP) to integrate with Stripe APIs through function calling. The
+The Stripe Agent Toolkit enables popular agent frameworks including OpenAI's Agent SDK, LangChain, CrewAI, Vercel's AI SDK, and Model Context Protocol (MCP) to integrate with Stripe APIs through function calling. The
 library is not exhaustive of the entire Stripe API. It includes support for both Python and TypeScript and is built directly on top of the Stripe [Python][python-sdk] and [Node][node-sdk] SDKs.
 
 Included below are basic instructions, but refer to the [Python](/python) and [TypeScript](/typescript) packages for more information.
@@ -27,7 +26,7 @@ The library needs to be configured with your account's secret key which is
 available in your [Stripe Dashboard][api-keys].
 
 ```python
-from stripe_agent_toolkit.crewai.toolkit import StripeAgentToolkit
+from stripe_agent_toolkit.openai.toolkit import StripeAgentToolkit
 
 stripe_agent_toolkit = StripeAgentToolkit(
     secret_key="sk_test_...",
@@ -41,20 +40,19 @@ stripe_agent_toolkit = StripeAgentToolkit(
 )
 ```
 
-The toolkit works with LangChain and CrewAI and can be passed as a list of tools. For example:
+The toolkit works with OpenAI's Agent SDK, LangChain, and CrewAI and can be passed as a list of tools. For example:
 
 ```python
-from crewai import Agent
+from agents import Agent
 
 stripe_agent = Agent(
-    role="Stripe Agent",
-    goal="Integrate with Stripe",
-    backstory="You are an expert at integrating with Stripe",
-    tools=[*stripe_agent_toolkit.get_tools()]
+    name="Stripe Agent",
+    instructions="You are an expert at integrating with Stripe",
+    tools=stripe_agent_toolkit.get_tools()
 )
 ```
 
-Examples for LangChain and CrewAI are included in [/examples](/python/examples).
+Examples for OpenAI's Agent SDK,LangChain, and CrewAI are included in [/examples](/python/examples).
 
 #### Context
 
