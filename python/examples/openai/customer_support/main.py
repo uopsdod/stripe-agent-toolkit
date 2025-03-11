@@ -1,17 +1,14 @@
-# pyright: strict
-
+import env
 import asyncio
 from emailer import Emailer, Email
 from typing import Union, List
 import support_agent
 import markdown as markdown
 import json
-import env
-
 
 from agents import (
-    Helpers,
-    TInputItem,
+    ItemHelpers,
+    TResponseInputItem,
 )
 
 
@@ -39,7 +36,7 @@ async def respond(thread: List[Email]) -> Union[Email, None]:
     print(f"Got unread email:\n  {json.dumps(most_recent.to_dict())}")
 
     # Loop through the entire thread to add historical context for the agent
-    input_items: list[TInputItem] = []
+    input_items: list[TResponseInputItem] = []
     for email in thread:
         input_items.append(
             {
@@ -72,7 +69,7 @@ async def respond(thread: List[Email]) -> Union[Email, None]:
     print(f"Sending to agent:\n  {json.dumps(input_items)}")
 
     output = await support_agent.run(input_items)
-    body_md = Helpers.text_output(output.all_outputs)
+    body_md = ItemHelpers.text_message_outputs(output.new_items)
 
     # Handle answers that the agent doesn't know
     if unsure(body_md.lower()):
