@@ -9,6 +9,7 @@ import {
   listPricesPrompt,
   createPaymentLinkPrompt,
   createInvoicePrompt,
+  listInvoicesPrompt,
   createInvoiceItemPrompt,
   finalizeInvoicePrompt,
   retrieveBalancePrompt,
@@ -26,6 +27,7 @@ import {
   listPricesParameters,
   createPaymentLinkParameters,
   createInvoiceParameters,
+  listInvoicesParameters,
   createInvoiceItemParameters,
   finalizeInvoiceParameters,
   retrieveBalanceParameters,
@@ -132,6 +134,17 @@ const tools: Tool[] = [
     actions: {
       invoices: {
         create: true,
+      },
+    },
+  },
+  {
+    method: 'list_invoices',
+    name: 'List Invoices',
+    description: listInvoicesPrompt,
+    parameters: listInvoicesParameters,
+    actions: {
+      invoices: {
+        read: true,
       },
     },
   },

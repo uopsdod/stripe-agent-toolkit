@@ -59,6 +59,14 @@ It takes one argument:
 - customer (str): The ID of the customer to create the invoice for.
 `;
 
+export const listInvoicesPrompt = `
+This tool will fetch a list of Invoices from Stripe.
+
+It takes two arguments:
+- customer (str, optional): The ID of the customer to list invoices for.
+- limit (int, optional): The number of invoices to return.
+`;
+
 export const createInvoiceItemPrompt = `
 This tool will create an invoice item in Stripe.
 

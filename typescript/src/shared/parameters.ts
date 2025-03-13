@@ -91,6 +91,22 @@ export const createInvoiceParameters = z.object({
     .describe('The number of days until the invoice is due.'),
 });
 
+export const listInvoicesParameters = z.object({
+  customer: z
+    .string()
+    .optional()
+    .describe('The ID of the customer to list invoices for.'),
+  limit: z
+    .number()
+    .int()
+    .min(1)
+    .max(100)
+    .optional()
+    .describe(
+      'A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.'
+    ),
+});
+
 export const createInvoiceItemParameters = z.object({
   customer: z
     .string()
