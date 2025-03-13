@@ -9,6 +9,7 @@ import {
   listPricesParameters,
   createPaymentLinkParameters,
   createInvoiceParameters,
+  listInvoicesParameters,
   createInvoiceItemParameters,
   finalizeInvoiceParameters,
   retrieveBalanceParameters,
@@ -158,6 +159,23 @@ export const createInvoice = async (
     };
   } catch (error) {
     return 'Failed to create invoice';
+  }
+};
+
+export const listInvoices = async (
+  stripe: Stripe,
+  context: Context,
+  params: z.infer<typeof listInvoicesParameters>
+) => {
+  try {
+    const invoices = await stripe.invoices.list(
+      params,
+      context.account ? {stripeAccount: context.account} : undefined
+    );
+
+    return invoices.data;
+  } catch (error) {
+    return 'Failed to list invoices';
   }
 };
 

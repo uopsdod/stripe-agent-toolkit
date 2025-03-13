@@ -8,6 +8,7 @@ import {
   listPrices,
   createPaymentLink,
   createInvoice,
+  listInvoices,
   createInvoiceItem,
   finalizeInvoice,
   retrieveBalance,
@@ -95,6 +96,11 @@ class StripeAPI {
     } else if (method === 'create_invoice') {
       const output = JSON.stringify(
         await createInvoice(this.stripe, this.context, arg)
+      );
+      return output;
+    } else if (method === 'list_invoices') {
+      const output = JSON.stringify(
+        await listInvoices(this.stripe, this.context, arg)
       );
       return output;
     } else if (method === 'create_invoice_item') {

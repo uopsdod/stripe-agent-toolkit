@@ -7,6 +7,7 @@ import {
   listPrices,
   createPaymentLink,
   createInvoice,
+  listInvoices,
   createInvoiceItem,
   finalizeInvoice,
   retrieveBalance,
@@ -37,6 +38,7 @@ const Stripe = jest.fn().mockImplementation(() => ({
     create: jest.fn(),
     finalizeInvoice: jest.fn(),
     retrieve: jest.fn(),
+    list: jest.fn(),
   },
   invoiceItems: {
     create: jest.fn(),
@@ -396,6 +398,45 @@ describe('createInvoice', () => {
       stripeAccount: context.account,
     });
     expect(result).toEqual(mockInvoice);
+  });
+});
+
+describe('listInvoices', () => {
+  it('should list invoices and return them', async () => {
+    const mockInvoices = [
+      {id: 'in_123456', customer: 'cus_123456'},
+      {id: 'in_789012', customer: 'cus_789012'},
+    ];
+
+    const context = {};
+
+    stripe.invoices.list.mockResolvedValue({data: mockInvoices});
+
+    const result = await listInvoices(stripe, context, {});
+
+    expect(stripe.invoices.list).toHaveBeenCalledWith({}, undefined);
+    expect(result).toEqual(mockInvoices);
+  });
+
+  it('should specify the connected account if included in context', async () => {
+    const mockInvoices = [
+      {id: 'in_123456', customer: 'cus_123456'},
+      {id: 'in_789012', customer: 'cus_789012'},
+    ];
+
+    const context = {
+      account: 'acct_123456',
+    };
+
+    stripe.invoices.list.mockResolvedValue({data: mockInvoices});
+
+    const result = await listInvoices(stripe, context, {});
+
+    expect(stripe.invoices.list).toHaveBeenCalledWith(
+      {},
+      {stripeAccount: context.account}
+    );
+    expect(result).toEqual(mockInvoices);
   });
 });
 
