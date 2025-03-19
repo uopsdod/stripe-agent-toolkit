@@ -39,9 +39,16 @@ class InvoiceOutput(BaseModel):
     email: str = Field(description="The email of the customer")
     service: str = Field(description="The service that the customer is invoiced for")
     amount_due: int = Field(description="The dollar amount due for the invoice. Convert text to dollar amounts if needed.")
+    id: str = Field(description="The id of the stripe invoice")
 
 class InvoiceListOutput(BaseModel):
     invoices: list[InvoiceOutput]
+
+invoice_agent = Agent(
+    name="Invoice Agent",
+    instructions="You are an expert at using the Stripe API to create, finalize, and send invoices to customers.",
+    tools=stripe_agent_toolkit.get_tools(),
+)
 
 file_search_agent = Agent(
     name="File Search Agent",
@@ -53,37 +60,20 @@ file_search_agent = Agent(
         )
     ],
     output_type=InvoiceListOutput,
-)
-
-invoice_agent = Agent(
-    name="Invoice Agent",
-    instructions="You are an expert at using the Stripe API to create, finalize, and send invoices to customers.",
-    tools=stripe_agent_toolkit.get_tools(),
+    handoffs=[invoice_agent]
 )
 
 async def main():
-    assignment = "Search for all customers that haven't paid across all of my documents. For each, create, finalize, and send an invoice."
+    assignment = "Search for all customers that haven't paid across all of my documents. Handoff to the invoice agent to create, finalize, and send an invoice for each."
 
     outstanding_invoices = await Runner.run(
         file_search_agent,
         assignment,
     )
 
-    invoices_to_send = outstanding_invoices.final_output.invoices
+    invoices = outstanding_invoices.final_output
 
-    for invoice in invoices_to_send:
-        print(invoice.name, invoice.email, invoice.service, invoice.amount_due)
-
-    # Iterate through each invoice and create a task
-    for invoice in invoices_to_send:
-        print(f"Initiating invoice generation for {invoice.name} ({invoice.email}) for {invoice.service} for ${invoice.amount_due}.")
-
-        invoice_task = await Runner.run(
-            invoice_agent,
-            f"Create, finalize, and send an invoice to {invoice.name} ({invoice.email}) for {invoice.service} for ${invoice.amount_due}."
-        )
-        print(invoice_task.final_output)
-
+    print(invoices)
 
 if __name__ == "__main__":
     asyncio.run(main())
