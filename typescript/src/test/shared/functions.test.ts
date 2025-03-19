@@ -363,7 +363,7 @@ describe('createInvoice', () => {
   it('should create an invoice and return it', async () => {
     const params = {
       customer: 'cus_123456',
-      items: [{price: 'price_123456', quantity: 1}],
+      days_until_due: 30,
     };
 
     const mockInvoice = {id: 'in_123456', customer: 'cus_123456'};
@@ -381,7 +381,7 @@ describe('createInvoice', () => {
   it('should specify the connected account if included in context', async () => {
     const params = {
       customer: 'cus_123456',
-      items: [{price: 'price_123456', quantity: 1}],
+      days_until_due: 30,
     };
 
     const mockInvoice = {id: 'in_123456', customer: 'cus_123456'};
@@ -397,6 +397,31 @@ describe('createInvoice', () => {
     expect(stripe.invoices.create).toHaveBeenCalledWith(params, {
       stripeAccount: context.account,
     });
+    expect(result).toEqual(mockInvoice);
+  });
+
+  it('should create an invoice with a customer if included in context', async () => {
+    const params = {
+      days_until_due: 30,
+    };
+
+    const mockInvoice = {id: 'in_123456', customer: 'cus_123456'};
+
+    const context = {
+      customer: 'cus_123456',
+    };
+
+    stripe.invoices.create.mockResolvedValue(mockInvoice);
+
+    const result = await createInvoice(stripe, context, params);
+
+    expect(stripe.invoices.create).toHaveBeenCalledWith(
+      {
+        ...params,
+        customer: context.customer,
+      },
+      undefined
+    );
     expect(result).toEqual(mockInvoice);
   });
 });
@@ -435,6 +460,27 @@ describe('listInvoices', () => {
     expect(stripe.invoices.list).toHaveBeenCalledWith(
       {},
       {stripeAccount: context.account}
+    );
+    expect(result).toEqual(mockInvoices);
+  });
+
+  it('should list invoices for a specific customer', async () => {
+    const mockInvoices = [
+      {id: 'in_123456', customer: 'cus_123456'},
+      {id: 'in_789012', customer: 'cus_789012'},
+    ];
+
+    const context = {
+      customer: 'cus_123456',
+    };
+
+    stripe.invoices.list.mockResolvedValue({data: mockInvoices});
+
+    const result = await listInvoices(stripe, context, {});
+
+    expect(stripe.invoices.list).toHaveBeenCalledWith(
+      {customer: context.customer},
+      undefined
     );
     expect(result).toEqual(mockInvoices);
   });
@@ -519,6 +565,32 @@ describe('createInvoiceItem', () => {
     expect(stripe.invoiceItems.create).toHaveBeenCalledWith(params, {
       stripeAccount: context.account,
     });
+    expect(result).toEqual(mockInvoiceItem);
+  });
+
+  it('should create an invoice item with a customer if included in context', async () => {
+    const params = {
+      price: 'price_123456',
+      invoice: 'in_123456',
+    };
+
+    const mockInvoiceItem = {id: 'ii_123456', invoice: 'in_123456'};
+
+    const context = {
+      customer: 'cus_123456',
+    };
+
+    stripe.invoiceItems.create.mockResolvedValue(mockInvoiceItem);
+
+    const result = await createInvoiceItem(stripe, context, params);
+
+    expect(stripe.invoiceItems.create).toHaveBeenCalledWith(
+      {
+        ...params,
+        customer: context.customer,
+      },
+      undefined
+    );
     expect(result).toEqual(mockInvoiceItem);
   });
 });
@@ -693,12 +765,40 @@ describe('listPaymentIntents', () => {
     );
     expect(result).toEqual(mockPaymentIntents);
   });
+
+  it('should list payment intents for a specific customer if included in context', async () => {
+    const mockPaymentIntents = [
+      {
+        id: 'pi_123456',
+        customer: 'cus_123456',
+        amount: 1000,
+        status: 'succeeded',
+        description: 'Test Payment Intent',
+      },
+    ];
+
+    const context = {
+      customer: 'cus_123456',
+    };
+
+    stripe.paymentIntents.list.mockResolvedValue({data: mockPaymentIntents});
+
+    const result = await listPaymentIntents(stripe, context, {});
+
+    expect(stripe.paymentIntents.list).toHaveBeenCalledWith(
+      {customer: context.customer},
+      undefined
+    );
+    expect(result).toEqual(mockPaymentIntents);
+  });
 });
 
 describe('searchDocumentation', () => {
   it('should search for Stripe documentation and return sources', async () => {
     const question = 'How to create Stripe checkout session?';
-    const requestBody: z.infer<typeof searchDocumentationParameters> = {
+    const requestBody: z.infer<
+      ReturnType<typeof searchDocumentationParameters>
+    > = {
       question: question,
       language: 'ruby',
     };
