@@ -36,6 +36,8 @@ import {
   listPaymentIntentsParameters,
 } from './parameters';
 
+import type {Context} from './configuration';
+
 export type Tool = {
   method: string;
   name: string;
@@ -48,12 +50,12 @@ export type Tool = {
   };
 };
 
-const tools: Tool[] = [
+const tools = (context: Context): Tool[] => [
   {
     method: 'create_customer',
     name: 'Create Customer',
-    description: createCustomerPrompt,
-    parameters: createCustomerParameters,
+    description: createCustomerPrompt(context),
+    parameters: createCustomerParameters(context),
     actions: {
       customers: {
         create: true,
@@ -63,8 +65,8 @@ const tools: Tool[] = [
   {
     method: 'list_customers',
     name: 'List Customers',
-    description: listCustomersPrompt,
-    parameters: listCustomersParameters,
+    description: listCustomersPrompt(context),
+    parameters: listCustomersParameters(context),
     actions: {
       customers: {
         read: true,
@@ -74,8 +76,8 @@ const tools: Tool[] = [
   {
     method: 'create_product',
     name: 'Create Product',
-    description: createProductPrompt,
-    parameters: createProductParameters,
+    description: createProductPrompt(context),
+    parameters: createProductParameters(context),
     actions: {
       products: {
         create: true,
@@ -85,8 +87,8 @@ const tools: Tool[] = [
   {
     method: 'list_products',
     name: 'List Products',
-    description: listProductsPrompt,
-    parameters: listProductsParameters,
+    description: listProductsPrompt(context),
+    parameters: listProductsParameters(context),
     actions: {
       products: {
         read: true,
@@ -96,8 +98,8 @@ const tools: Tool[] = [
   {
     method: 'create_price',
     name: 'Create Price',
-    description: createPricePrompt,
-    parameters: createPriceParameters,
+    description: createPricePrompt(context),
+    parameters: createPriceParameters(context),
     actions: {
       prices: {
         create: true,
@@ -107,8 +109,8 @@ const tools: Tool[] = [
   {
     method: 'list_prices',
     name: 'List Prices',
-    description: listPricesPrompt,
-    parameters: listPricesParameters,
+    description: listPricesPrompt(context),
+    parameters: listPricesParameters(context),
     actions: {
       prices: {
         read: true,
@@ -118,8 +120,8 @@ const tools: Tool[] = [
   {
     method: 'create_payment_link',
     name: 'Create Payment Link',
-    description: createPaymentLinkPrompt,
-    parameters: createPaymentLinkParameters,
+    description: createPaymentLinkPrompt(context),
+    parameters: createPaymentLinkParameters(context),
     actions: {
       paymentLinks: {
         create: true,
@@ -129,8 +131,8 @@ const tools: Tool[] = [
   {
     method: 'create_invoice',
     name: 'Create Invoice',
-    description: createInvoicePrompt,
-    parameters: createInvoiceParameters,
+    description: createInvoicePrompt(context),
+    parameters: createInvoiceParameters(context),
     actions: {
       invoices: {
         create: true,
@@ -140,8 +142,8 @@ const tools: Tool[] = [
   {
     method: 'list_invoices',
     name: 'List Invoices',
-    description: listInvoicesPrompt,
-    parameters: listInvoicesParameters,
+    description: listInvoicesPrompt(context),
+    parameters: listInvoicesParameters(context),
     actions: {
       invoices: {
         read: true,
@@ -151,8 +153,8 @@ const tools: Tool[] = [
   {
     method: 'create_invoice_item',
     name: 'Create Invoice Item',
-    description: createInvoiceItemPrompt,
-    parameters: createInvoiceItemParameters,
+    description: createInvoiceItemPrompt(context),
+    parameters: createInvoiceItemParameters(context),
     actions: {
       invoiceItems: {
         create: true,
@@ -162,8 +164,8 @@ const tools: Tool[] = [
   {
     method: 'finalize_invoice',
     name: 'Finalize Invoice',
-    description: finalizeInvoicePrompt,
-    parameters: finalizeInvoiceParameters,
+    description: finalizeInvoicePrompt(context),
+    parameters: finalizeInvoiceParameters(context),
     actions: {
       invoices: {
         update: true,
@@ -173,8 +175,8 @@ const tools: Tool[] = [
   {
     method: 'retrieve_balance',
     name: 'Retrieve Balance',
-    description: retrieveBalancePrompt,
-    parameters: retrieveBalanceParameters,
+    description: retrieveBalancePrompt(context),
+    parameters: retrieveBalanceParameters(context),
     actions: {
       balance: {
         read: true,
@@ -184,8 +186,8 @@ const tools: Tool[] = [
   {
     method: 'create_refund',
     name: 'Create Refund',
-    description: createRefundPrompt,
-    parameters: createRefundParameters,
+    description: createRefundPrompt(context),
+    parameters: createRefundParameters(context),
     actions: {
       refunds: {
         create: true,
@@ -195,8 +197,8 @@ const tools: Tool[] = [
   {
     method: 'list_payment_intents',
     name: 'List Payment Intents',
-    description: listPaymentIntentsPrompt,
-    parameters: listPaymentIntentsParameters,
+    description: listPaymentIntentsPrompt(context),
+    parameters: listPaymentIntentsParameters(context),
     actions: {
       paymentIntents: {
         read: true,
@@ -206,8 +208,8 @@ const tools: Tool[] = [
   {
     method: 'search_documentation',
     name: 'Search Documentation',
-    description: searchDocumentationPrompt,
-    parameters: searchDocumentationParameters,
+    description: searchDocumentationPrompt(context),
+    parameters: searchDocumentationParameters(context),
     actions: {
       documentation: {
         read: true,

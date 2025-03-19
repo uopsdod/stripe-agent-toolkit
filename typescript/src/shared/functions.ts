@@ -22,7 +22,7 @@ import type {Context} from './configuration';
 export const createCustomer = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof createCustomerParameters>
+  params: z.infer<ReturnType<typeof createCustomerParameters>>
 ) => {
   try {
     const customer = await stripe.customers.create(
@@ -39,7 +39,7 @@ export const createCustomer = async (
 export const listCustomers = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof listCustomersParameters>
+  params: z.infer<ReturnType<typeof listCustomersParameters>>
 ) => {
   try {
     const customers = await stripe.customers.list(
@@ -56,7 +56,7 @@ export const listCustomers = async (
 export const createProduct = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof createProductParameters>
+  params: z.infer<ReturnType<typeof createProductParameters>>
 ) => {
   try {
     const product = await stripe.products.create(
@@ -73,7 +73,7 @@ export const createProduct = async (
 export const listProducts = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof listProductsParameters>
+  params: z.infer<ReturnType<typeof listProductsParameters>>
 ) => {
   try {
     const products = await stripe.products.list(
@@ -90,7 +90,7 @@ export const listProducts = async (
 export const createPrice = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof createPriceParameters>
+  params: z.infer<ReturnType<typeof createPriceParameters>>
 ) => {
   try {
     const price = await stripe.prices.create(
@@ -107,7 +107,7 @@ export const createPrice = async (
 export const listPrices = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof listPricesParameters>
+  params: z.infer<ReturnType<typeof listPricesParameters>>
 ) => {
   try {
     const prices = await stripe.prices.list(
@@ -124,7 +124,7 @@ export const listPrices = async (
 export const createPaymentLink = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof createPaymentLinkParameters>
+  params: z.infer<ReturnType<typeof createPaymentLinkParameters>>
 ) => {
   try {
     const paymentLink = await stripe.paymentLinks.create(
@@ -143,9 +143,13 @@ export const createPaymentLink = async (
 export const createInvoice = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof createInvoiceParameters>
+  params: z.infer<ReturnType<typeof createInvoiceParameters>>
 ) => {
   try {
+    if (context.customer) {
+      params.customer = context.customer;
+    }
+
     const invoice = await stripe.invoices.create(
       params,
       context.account ? {stripeAccount: context.account} : undefined
@@ -165,9 +169,13 @@ export const createInvoice = async (
 export const listInvoices = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof listInvoicesParameters>
+  params: z.infer<ReturnType<typeof listInvoicesParameters>>
 ) => {
   try {
+    if (context.customer) {
+      params.customer = context.customer;
+    }
+
     const invoices = await stripe.invoices.list(
       params,
       context.account ? {stripeAccount: context.account} : undefined
@@ -182,10 +190,15 @@ export const listInvoices = async (
 export const createInvoiceItem = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof createInvoiceItemParameters>
+  params: z.infer<ReturnType<typeof createInvoiceItemParameters>>
 ) => {
   try {
+    if (context.customer) {
+      params.customer = context.customer;
+    }
+
     const invoiceItem = await stripe.invoiceItems.create(
+      // @ts-ignore
       params,
       context.account ? {stripeAccount: context.account} : undefined
     );
@@ -202,7 +215,7 @@ export const createInvoiceItem = async (
 export const finalizeInvoice = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof finalizeInvoiceParameters>
+  params: z.infer<ReturnType<typeof finalizeInvoiceParameters>>
 ) => {
   try {
     const invoice = await stripe.invoices.finalizeInvoice(
@@ -224,7 +237,7 @@ export const finalizeInvoice = async (
 export const retrieveBalance = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof retrieveBalanceParameters>
+  params: z.infer<ReturnType<typeof retrieveBalanceParameters>>
 ) => {
   try {
     const balance = await stripe.balance.retrieve(
@@ -241,7 +254,7 @@ export const retrieveBalance = async (
 export const createRefund = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof createRefundParameters>
+  params: z.infer<ReturnType<typeof createRefundParameters>>
 ) => {
   try {
     const refund = await stripe.refunds.create(
@@ -258,9 +271,13 @@ export const createRefund = async (
 export const listPaymentIntents = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof listPaymentIntentsParameters>
+  params: z.infer<ReturnType<typeof listPaymentIntentsParameters>>
 ) => {
   try {
+    if (context.customer) {
+      params.customer = context.customer;
+    }
+
     const paymentIntents = await stripe.paymentIntents.list(
       params,
       context.account ? {stripeAccount: context.account} : undefined
@@ -282,7 +299,7 @@ export const listPaymentIntents = async (
 export const searchDocumentation = async (
   stripe: Stripe,
   context: Context,
-  params: z.infer<typeof searchDocumentationParameters>
+  params: z.infer<ReturnType<typeof searchDocumentationParameters>>
 ) => {
   try {
     const endpoint = 'https://ai.stripe.com/search';
