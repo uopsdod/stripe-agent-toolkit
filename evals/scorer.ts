@@ -1,22 +1,102 @@
 require("dotenv").config();
 
 import { ClosedQA } from "autoevals";
-import get from "lodash/get";
 import every from "lodash/every";
-import { openai } from "./eval";
+import { openai } from "./openai";
+import { EvalOutput } from "./eval";
+import { ChatCompletionMessageParam } from "openai/resources/chat/completions.mjs";
+import { ChatCompletionMessageToolCall } from "openai/resources/chat/completions.mjs";
+import { Configuration as StripeAgentToolkitConfig } from "../typescript/src/shared/configuration";
+
+/*
+ * EvalInput is what is passed into the agent.
+ * It contains a userPrompt and configuration that can be
+ * used to override the toolkit configuration.
+ */
+export type EvalInput = {
+  toolkitConfigOverride: StripeAgentToolkitConfig;
+  userPrompt: string;
+};
+
+/*
+ * EvalCaseFunction is the helper function that is used to
+ * run assertions on the output of the agent. It does some
+ * parsing of the raw completetion messages and tool calls
+ * to make it easier to write assertions.
+ */
+export type EvalCaseFunction = ({
+  toolCalls,
+  messages,
+  assistantMessages,
+}: {
+  toolCalls: ChatCompletionMessageToolCall[];
+  messages: ChatCompletionMessageParam[];
+  assistantMessages: string[];
+}) => Array<AssertionResult | Promise<AssertionResult>>;
+
+export const AssertionScorer = async ({
+  output: responseMessages,
+  expected: evalCaseFunction,
+}: {
+  output: EvalOutput;
+  expected: EvalCaseFunction;
+}) => {
+  const toolCalls = responseMessages.flatMap((m) => {
+    if ("tool_calls" in m && m.tool_calls) {
+      return m.tool_calls;
+    } else {
+      return [];
+    }
+  });
+
+  const assistantMessages = responseMessages
+    .filter((m) => m.role === "assistant")
+    .map((m) => (typeof m.content === "string" ? m.content : ""));
+
+  const rawResults = evalCaseFunction({
+    toolCalls,
+    messages: responseMessages,
+    assistantMessages,
+  });
+
+  const assertionResults = await Promise.all(rawResults);
+
+  const allPassed = every(assertionResults, (r) => r.status === "passed");
+
+  return {
+    name: "Assertions Score",
+    score: allPassed ? 1 : 0,
+    metadata: {
+      assertionResults,
+    },
+  };
+};
+
+/*
+Below are assertion functions that can be used to evaluate the output of the agent.
+Similar to test framework helpers like Jest.
+*/
+
+export type AssertionResult = {
+  status: "passed" | "failed";
+  assertion_type: string;
+  expected?: string;
+  actualValue?: string;
+  message?: string;
+};
 
 /**
  * Uses an LLM call to classify if a substring is semantically contained in a text.
  * @param text1 The full text you want to check against
  * @param text2 The string you want to check if it is contained in the text
  */
-async function semanticContains({
+export async function semanticContains({
   text1,
   text2,
 }: {
   text1: string;
   text2: string;
-}): Promise<boolean> {
+}): Promise<AssertionResult> {
   const system = `
     You are a highly intelligent AI that can determine if a piece of text semantically contains another piece of text.
     You will be given two pieces of text and you need to determine if the first piece of text semantically contains the second piece of text.
@@ -35,98 +115,63 @@ async function semanticContains({
   });
 
   const response = completion.choices[0].message.content?.toLowerCase();
-  return response === "yes";
+  return {
+    status: response === "yes" ? "passed" : "failed",
+    assertion_type: "semantic_contains",
+    expected: text2,
+    actualValue: text1,
+  };
 }
 
-type AssertionTypes =
-  | "equals"
-  | "exists"
-  | "not_exists"
-  | "llm_criteria_met"
-  | "semantic_contains";
+export const expectToolCall = (
+  actualToolCalls: ChatCompletionMessageToolCall[],
+  expectedToolCalls: string[]
+): AssertionResult => {
+  const actualToolCallNames = actualToolCalls.map((tc) => tc.function.name);
 
-export type Assertion = {
-  path: string;
-  assertion_type: AssertionTypes;
-  value: string;
-};
-
-export const AssertionScorer = async ({
-  input,
-  output,
-  expected: assertions,
-}: {
-  input: string;
-  output: any;
-  expected: Assertion[];
-}) => {
-  // for each assertion, perform the comparison
-  const assertionResults: {
-    status: string;
-    path: string;
-    assertion_type: string;
-    value: string;
-    actualValue: string;
-  }[] = [];
-
-  for (const assertion of assertions) {
-    const { assertion_type, path, value } = assertion;
-    const actualValue = get(output, path);
-
-    let passedTest = false;
-
-    try {
-      switch (assertion_type) {
-        case "equals":
-          passedTest = actualValue === value;
-          break;
-        case "exists":
-          passedTest = actualValue !== undefined;
-          break;
-        case "not_exists":
-          passedTest = actualValue === undefined;
-          break;
-        case "llm_criteria_met":
-          const closedQA = await ClosedQA({
-            input:
-              "According to the provided criterion is the submission correct?",
-            criteria: value,
-            output: actualValue,
-            openAiApiKey: "EMPTY",
-            openAiBaseUrl: process.env.OPENAI_BASE_URL,
-          });
-          passedTest = !!closedQA.score && closedQA.score > 0.5;
-          break;
-        case "semantic_contains":
-          passedTest = await semanticContains({
-            text1: actualValue,
-            text2: value,
-          });
-          break;
-        default:
-          assertion_type satisfies never;
-          throw new Error(`unknown assertion type ${assertion_type}`);
-      }
-    } catch (e) {
-      console.error(e);
-      passedTest = false;
-    }
-    assertionResults.push({
-      status: passedTest ? "passed" : "failed",
-      path,
-      assertion_type,
-      value,
-      actualValue,
-    });
-  }
-
-  const allPassed = every(assertionResults, (r) => r.status === "passed");
+  const pass = actualToolCallNames.some((tc) => expectedToolCalls.includes(tc));
 
   return {
-    name: "Assertions Score",
-    score: allPassed ? 1 : 0,
-    metadata: {
-      assertionResults,
-    },
+    status: pass ? "passed" : "failed",
+    assertion_type: "expectToolCall",
+    expected: expectedToolCalls.join(", "),
+    actualValue: actualToolCallNames.join(", "),
+  };
+};
+
+export const llmCriteriaMet = async (
+  messages: ChatCompletionMessageParam[],
+  criteria: string
+): Promise<AssertionResult> => {
+  const assistantMessages = messages
+    .filter((m) => m.role === "assistant")
+    .map((m) => m.content)
+    .join("\n");
+
+  const closedQA = await ClosedQA({
+    client: openai,
+    input: "According to the provided criterion is the submission correct?",
+    criteria,
+    output: assistantMessages,
+  });
+
+  const pass = !!closedQA.score && closedQA.score > 0.5;
+
+  return {
+    status: pass ? "passed" : "failed",
+    assertion_type: "llm_criteria_met",
+    expected: criteria,
+    actualValue: assistantMessages,
+  };
+};
+
+export const assert = (
+  condition: boolean,
+  message: string
+): AssertionResult => {
+  return {
+    status: condition ? "passed" : "failed",
+    assertion_type: "plain_assert",
+    message,
   };
 };

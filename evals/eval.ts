@@ -1,62 +1,77 @@
 require("dotenv").config();
 
 import { StripeAgentToolkit } from "../typescript/src/openai";
-import OpenAI from "openai";
 import type { ChatCompletionMessageParam } from "openai/resources";
-import { Eval, wrapOpenAI } from "braintrust";
-import { AssertionScorer } from "./scorer";
-import { TEST_CASES } from "./cases";
-
-// This wrap function adds useful tracing in Braintrust
-export const openai = wrapOpenAI(
-  new OpenAI({
-    baseURL: process.env.OPENAI_BASE_URL,
-    apiKey: "EMPTY",
-  })
-);
-
-const stripeAgentToolkit = new StripeAgentToolkit({
-  secretKey: process.env.STRIPE_SECRET_KEY!,
-  configuration: {
-    actions: {
-      paymentLinks: {
-        create: true,
-        read: true,
-      },
-      products: {
-        create: true,
-        read: true,
-      },
-      prices: {
-        create: true,
-        read: true,
-      },
-      customers: {
-        create: true,
-        read: true,
-      },
-    },
-  },
-});
+import { Eval } from "braintrust";
+import { AssertionScorer, EvalCaseFunction, EvalInput } from "./scorer";
+import { getEvalTestCases } from "./cases";
+import { openai } from "./openai";
+import OpenAI from "openai";
 
 // This is the core "workhorse" function that accepts an input and returns a response
 // which calls stripe agent tookit
-async function task(input: string) {
+async function task(evalInput: EvalInput): Promise<EvalOutput> {
+  const stripeAgentToolkit = new StripeAgentToolkit({
+    secretKey: process.env.STRIPE_SECRET_KEY!,
+    configuration: {
+      actions: {
+        paymentLinks: {
+          create: true,
+          read: true,
+        },
+        products: {
+          create: true,
+          read: true,
+        },
+        prices: {
+          create: true,
+          read: true,
+        },
+        customers: {
+          create: true,
+          read: true,
+        },
+        paymentIntents: {
+          create: true,
+          read: true,
+        },
+        invoices: {
+          create: true,
+          read: true,
+        },
+        invoiceItems: {
+          create: true,
+          read: true,
+        },
+        refunds: {
+          create: true,
+          read: true,
+        },
+        balance: {
+          read: true,
+        },
+      },
+      ...evalInput.toolkitConfigOverride,
+    },
+  });
+
   let messages: ChatCompletionMessageParam[] = [
     {
       role: "user",
-      content: input,
+      content: evalInput.userPrompt,
     },
   ];
 
   let completion: OpenAI.Chat.Completions.ChatCompletion;
+
+  const tools = stripeAgentToolkit.getTools();
 
   while (true) {
     // eslint-disable-next-line no-await-in-loop
     completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages,
-      tools: stripeAgentToolkit.getTools(),
+      tools,
     });
 
     const message = completion.choices[0].message;
@@ -75,17 +90,16 @@ async function task(input: string) {
     }
   }
 
-  return {
-    responseChatCompletions: [completion.choices[0].message],
-    messages,
-  };
+  return messages;
 }
 
 const BRAINTRUST_PROJECT = "agent-toolkit";
 
+export type EvalOutput = ChatCompletionMessageParam[];
+
 async function main() {
-  await Eval(BRAINTRUST_PROJECT, {
-    data: TEST_CASES,
+  await Eval<EvalInput, EvalOutput, EvalCaseFunction>(BRAINTRUST_PROJECT, {
+    data: await getEvalTestCases(),
     task: async (input) => {
       const result = await task(input);
       return result;
