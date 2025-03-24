@@ -74,6 +74,7 @@ This tool will create an invoice item in Stripe.
 It takes two arguments:
 - customer (str): The ID of the customer to create the invoice item for.
 - price (str): The ID of the price to create the invoice item for.
+- invoice (str): The ID of the invoice to create the invoice item for.
 """
 
 FINALIZE_INVOICE_PROMPT = """
