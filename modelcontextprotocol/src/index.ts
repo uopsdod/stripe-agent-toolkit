@@ -47,8 +47,8 @@ export function parseArgs(args: string[]): Options {
       if (key == 'tools') {
         options.tools = value.split(',');
       } else if (key == 'api-key') {
-        if (!value.startsWith('sk_')) {
-          throw new Error('API key must start with "sk_".');
+        if (!value.startsWith('sk_') && !value.startsWith('rk_')) {
+          throw new Error('API key must start with "sk_" or "rk_".');
         }
         options.apiKey = value;
       } else if (key == 'stripe-account') {
