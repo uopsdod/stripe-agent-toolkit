@@ -1,40 +1,49 @@
 import {z} from 'zod';
 
-import {createCustomerPrompt, listCustomersPrompt} from './customers/prompts';
-import {createProductPrompt, listProductsPrompt} from './products/prompts';
-import {createPricePrompt, listPricesPrompt} from './prices/prompts';
-import {createPaymentLinkPrompt} from './paymentLinks/prompts';
+import {
+  createCustomerPrompt,
+  listCustomersPrompt,
+} from '@/shared/customers/prompts';
+import {
+  createProductPrompt,
+  listProductsPrompt,
+} from '@/shared/products/prompts';
+import {createPricePrompt, listPricesPrompt} from '@/shared/prices/prompts';
+import {createPaymentLinkPrompt} from '@/shared/paymentLinks/prompts';
 import {
   createInvoicePrompt,
   listInvoicesPrompt,
   createInvoiceItemPrompt,
   finalizeInvoicePrompt,
-} from './invoices/prompts';
-import {retrieveBalancePrompt} from './balance/prompts';
-import {createRefundPrompt} from './refunds/prompts';
-import {searchDocumentationPrompt} from './documentation/prompts';
-import {listPaymentIntentsPrompt} from './paymentIntents/prompts';
+} from '@/shared/invoices/prompts';
+import {retrieveBalancePrompt} from '@/shared/balance/prompts';
+import {createRefundPrompt} from '@/shared/refunds/prompts';
+import {searchDocumentationPrompt} from '@/shared/documentation/prompts';
+import {listPaymentIntentsPrompt} from '@/shared/paymentIntents/prompts';
 
 import {
   createCustomerParameters,
   listCustomersParameters,
-} from './customers/parameters';
+} from '@/shared/customers/parameters';
 import {
   createProductParameters,
   listProductsParameters,
-} from './products/parameters';
-import {createPriceParameters, listPricesParameters} from './prices/parameters';
-import {createPaymentLinkParameters} from './paymentLinks/parameters';
+} from '@/shared/products/parameters';
+import {
+  createPriceParameters,
+  listPricesParameters,
+} from '@/shared/prices/parameters';
+import {createPaymentLinkParameters} from '@/shared/paymentLinks/parameters';
 import {
   createInvoiceParameters,
   listInvoicesParameters,
   createInvoiceItemParameters,
   finalizeInvoiceParameters,
 } from './invoices/parameters';
-import {retrieveBalanceParameters} from './balance/parameters';
-import {createRefundParameters} from './refunds/parameters';
-import {searchDocumentationParameters} from './documentation/parameters';
-import {listPaymentIntentsParameters} from './paymentIntents/parameters';
+import {retrieveBalanceParameters} from '@/shared/balance/parameters';
+import {createRefundParameters} from '@/shared/refunds/parameters';
+import {searchDocumentationParameters} from '@/shared/documentation/parameters';
+import {listPaymentIntentsParameters} from '@/shared/paymentIntents/parameters';
 
 import type {Context} from './configuration';
 

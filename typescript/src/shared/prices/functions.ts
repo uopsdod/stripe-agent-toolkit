@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 import {z} from 'zod';
+import type {Context} from '@/shared/configuration';
 import {createPriceParameters, listPricesParameters} from './parameters';
-import type {Context} from '../configuration';
 
 export const createPrice = async (
   stripe: Stripe,

@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 import {z} from 'zod';
+import type {Context} from '@/shared/configuration';
 import {searchDocumentationParameters} from './parameters';
-import type {Context} from '../configuration';
 
 export const searchDocumentation = async (
   stripe: Stripe,

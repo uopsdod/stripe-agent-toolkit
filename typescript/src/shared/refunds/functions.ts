@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 import {z} from 'zod';
+import type {Context} from '@/shared/configuration';
 import {createRefundParameters} from './parameters';
-import type {Context} from '../configuration';
 
 export const createRefund = async (
   stripe: Stripe,

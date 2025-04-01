@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 import {z} from 'zod';
+import type {Context} from '@/shared/configuration';
 import {createPaymentLinkParameters} from './parameters';
-import type {Context} from '../configuration';
 
 export const createPaymentLink = async (
   stripe: Stripe,

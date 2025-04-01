@@ -1,4 +1,4 @@
-import type {Context} from '../configuration';
+import type {Context} from '@/shared/configuration';
 
 export const createRefundPrompt = (_context: Context = {}) => `
 This tool will refund a payment intent in Stripe.

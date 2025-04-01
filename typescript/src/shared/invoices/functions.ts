@@ -1,12 +1,12 @@
 import Stripe from 'stripe';
 import {z} from 'zod';
+import type {Context} from '@/shared/configuration';
 import {
   createInvoiceParameters,
   listInvoicesParameters,
   createInvoiceItemParameters,
   finalizeInvoiceParameters,
 } from './parameters';
-import type {Context} from '../configuration';
 
 export const createInvoice = async (
   stripe: Stripe,

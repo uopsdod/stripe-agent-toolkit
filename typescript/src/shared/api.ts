@@ -8,11 +8,11 @@ import {
   listInvoices,
   createInvoiceItem,
   finalizeInvoice,
-} from './invoices/functions';
-import {retrieveBalance} from './balance/functions';
-import {createRefund} from './refunds/functions';
-import {searchDocumentation} from './documentation/functions';
-import {listPaymentIntents} from './paymentIntents/functions';
+} from '@/shared/invoices/functions';
+import {retrieveBalance} from '@/shared/balance/functions';
+import {createRefund} from '@/shared/refunds/functions';
+import {searchDocumentation} from '@/shared/documentation/functions';
+import {listPaymentIntents} from '@/shared/paymentIntents/functions';
 
 import type {Context} from './configuration';
 

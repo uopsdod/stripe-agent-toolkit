@@ -1,5 +1,5 @@
 import {z} from 'zod';
-import type {Context} from '../configuration';
+import type {Context} from '@/shared/configuration';
 
 export const createCustomerParameters = (
   _context: Context = {}

@@ -1,4 +1,4 @@
-import type {Context} from '../configuration';
+import type {Context} from '@/shared/configuration';
 
 export const createPricePrompt = (_context: Context = {}) => `
 This tool will create a price in Stripe. If a product has not already been specified, a product should be created first.

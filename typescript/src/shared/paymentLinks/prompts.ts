@@ -1,4 +1,4 @@
-import type {Context} from '../configuration';
+import type {Context} from '@/shared/configuration';
 
 export const createPaymentLinkPrompt = (_context: Context = {}) => `
 This tool will create a payment link in Stripe.

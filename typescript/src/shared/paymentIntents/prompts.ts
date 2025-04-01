@@ -1,4 +1,4 @@
-import type {Context} from '../configuration';
+import type {Context} from '@/shared/configuration';
 
 export const listPaymentIntentsPrompt = (context: Context = {}) => {
   const customerArg = context.customer
