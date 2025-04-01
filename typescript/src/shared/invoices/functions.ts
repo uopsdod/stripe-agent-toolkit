@@ -4,7 +4,6 @@ import type {Context} from '@/shared/configuration';
 import {
   createInvoiceParameters,
   listInvoicesParameters,
-  createInvoiceItemParameters,
   finalizeInvoiceParameters,
 } from './parameters';
 
@@ -52,31 +51,6 @@ export const listInvoices = async (
     return invoices.data;
   } catch (error) {
     return 'Failed to list invoices';
-  }
-};
-
-export const createInvoiceItem = async (
-  stripe: Stripe,
-  context: Context,
-  params: z.infer<ReturnType<typeof createInvoiceItemParameters>>
-) => {
-  try {
-    if (context.customer) {
-      params.customer = context.customer;
-    }
-
-    const invoiceItem = await stripe.invoiceItems.create(
-      // @ts-ignore
-      params,
-      context.account ? {stripeAccount: context.account} : undefined
-    );
-
-    return {
-      id: invoiceItem.id,
-      invoice: invoiceItem.invoice,
-    };
-  } catch (error) {
-    return 'Failed to create invoice item';
   }
 };
 

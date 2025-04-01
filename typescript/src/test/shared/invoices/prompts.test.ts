@@ -1,7 +1,7 @@
 import {
-  createInvoiceItemPrompt,
   createInvoicePrompt,
   listInvoicesPrompt,
+  finalizeInvoicePrompt,
 } from '@/shared/invoices/prompts';
 
 describe('createInvoicePrompt', () => {
@@ -28,14 +28,9 @@ describe('listInvoicesPrompt', () => {
   });
 });
 
-describe('createInvoiceItemPrompt', () => {
+describe('finalizeInvoicePrompt', () => {
   it('should return the correct prompt', () => {
-    const prompt = createInvoiceItemPrompt();
-    expect(prompt).toContain('customer');
-  });
-
-  it('should return the correct prompt when a customer is specified', () => {
-    const prompt = createInvoiceItemPrompt({customer: 'cus_123'});
-    expect(prompt).not.toContain('customer');
+    const prompt = finalizeInvoicePrompt();
+    expect(prompt).toContain('invoice');
   });
 });

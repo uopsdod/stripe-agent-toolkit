@@ -6,9 +6,9 @@ import {createPaymentLink} from './paymentLinks/functions';
 import {
   createInvoice,
   listInvoices,
-  createInvoiceItem,
   finalizeInvoice,
 } from '@/shared/invoices/functions';
+import {createInvoiceItem} from '@/shared/invoiceItems/functions';
 import {retrieveBalance} from '@/shared/balance/functions';
 import {createRefund} from '@/shared/refunds/functions';
 import {searchDocumentation} from '@/shared/documentation/functions';
