@@ -1,20 +1,26 @@
 import {
   createCustomerParameters,
-  createInvoiceItemParameters,
-  createInvoiceParameters,
-  createPaymentLinkParameters,
-  createPriceParameters,
-  createProductParameters,
-  createRefundParameters,
-  finalizeInvoiceParameters,
   listCustomersParameters,
-  listInvoicesParameters,
-  listPaymentIntentsParameters,
-  listPricesParameters,
+} from '../../shared/customers/parameters';
+import {
+  createProductParameters,
   listProductsParameters,
-  retrieveBalanceParameters,
-  searchDocumentationParameters,
-} from '../../shared/parameters';
+} from '../../shared/products/parameters';
+import {
+  createPriceParameters,
+  listPricesParameters,
+} from '../../shared/prices/parameters';
+import {createPaymentLinkParameters} from '../../shared/paymentLinks/parameters';
+import {
+  createInvoiceParameters,
+  listInvoicesParameters,
+  createInvoiceItemParameters,
+  finalizeInvoiceParameters,
+} from '../../shared/invoices/parameters';
+import {retrieveBalanceParameters} from '../../shared/balance/parameters';
+import {createRefundParameters} from '../../shared/refunds/parameters';
+import {listPaymentIntentsParameters} from '../../shared/paymentIntents/parameters';
+import {searchDocumentationParameters} from '../../shared/documentation/parameters';
 
 describe('createCustomerParameters', () => {
   it('should return the correct parameters if no context', () => {

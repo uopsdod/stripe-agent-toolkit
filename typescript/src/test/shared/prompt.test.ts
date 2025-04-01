@@ -2,8 +2,8 @@ import {
   createInvoiceItemPrompt,
   createInvoicePrompt,
   listInvoicesPrompt,
-  listPaymentIntentsPrompt,
-} from '../../shared/prompts';
+} from '../../shared/invoices/prompts';
+import {listPaymentIntentsPrompt} from '../../shared/paymentIntents/prompts';
 
 describe('createInvoicePrompt', () => {
   it('should return the correct prompt', () => {

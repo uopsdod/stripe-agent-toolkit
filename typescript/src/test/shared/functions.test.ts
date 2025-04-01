@@ -1,22 +1,20 @@
+import {createCustomer, listCustomers} from '../../shared/customers/functions';
+import {createProduct, listProducts} from '../../shared/products/functions';
+import {createPrice, listPrices} from '../../shared/prices/functions';
+import {createPaymentLink} from '../../shared/paymentLinks/functions';
 import {
-  createCustomer,
-  listCustomers,
-  createProduct,
-  listProducts,
-  createPrice,
-  listPrices,
-  createPaymentLink,
   createInvoice,
   listInvoices,
   createInvoiceItem,
   finalizeInvoice,
-  retrieveBalance,
-  createRefund,
-  searchDocumentation,
-  listPaymentIntents,
-} from '../../shared/functions';
+} from '../../shared/invoices/functions';
+import {retrieveBalance} from '../../shared/balance/functions';
+import {createRefund} from '../../shared/refunds/functions';
+import {searchDocumentation} from '../../shared/documentation/functions';
+import {listPaymentIntents} from '../../shared/paymentIntents/functions';
+
 import {z} from 'zod';
-import {searchDocumentationParameters} from '../../shared/parameters';
+import {searchDocumentationParameters} from '../../shared/documentation/parameters';
 
 const Stripe = jest.fn().mockImplementation(() => ({
   customers: {

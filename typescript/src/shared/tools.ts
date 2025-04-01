@@ -1,40 +1,40 @@
 import {z} from 'zod';
 
+import {createCustomerPrompt, listCustomersPrompt} from './customers/prompts';
+import {createProductPrompt, listProductsPrompt} from './products/prompts';
+import {createPricePrompt, listPricesPrompt} from './prices/prompts';
+import {createPaymentLinkPrompt} from './paymentLinks/prompts';
 import {
-  createCustomerPrompt,
-  listCustomersPrompt,
-  createProductPrompt,
-  listProductsPrompt,
-  createPricePrompt,
-  listPricesPrompt,
-  createPaymentLinkPrompt,
   createInvoicePrompt,
   listInvoicesPrompt,
   createInvoiceItemPrompt,
   finalizeInvoicePrompt,
-  retrieveBalancePrompt,
-  createRefundPrompt,
-  searchDocumentationPrompt,
-  listPaymentIntentsPrompt,
-} from './prompts';
+} from './invoices/prompts';
+import {retrieveBalancePrompt} from './balance/prompts';
+import {createRefundPrompt} from './refunds/prompts';
+import {searchDocumentationPrompt} from './documentation/prompts';
+import {listPaymentIntentsPrompt} from './paymentIntents/prompts';
 
 import {
   createCustomerParameters,
   listCustomersParameters,
+} from './customers/parameters';
+import {
   createProductParameters,
   listProductsParameters,
-  createPriceParameters,
-  listPricesParameters,
-  createPaymentLinkParameters,
+} from './products/parameters';
+import {createPriceParameters, listPricesParameters} from './prices/parameters';
+import {createPaymentLinkParameters} from './paymentLinks/parameters';
+import {
   createInvoiceParameters,
   listInvoicesParameters,
   createInvoiceItemParameters,
   finalizeInvoiceParameters,
-  retrieveBalanceParameters,
-  createRefundParameters,
-  searchDocumentationParameters,
-  listPaymentIntentsParameters,
-} from './parameters';
+} from './invoices/parameters';
+import {retrieveBalanceParameters} from './balance/parameters';
+import {createRefundParameters} from './refunds/parameters';
+import {searchDocumentationParameters} from './documentation/parameters';
+import {listPaymentIntentsParameters} from './paymentIntents/parameters';
 
 import type {Context} from './configuration';
 
