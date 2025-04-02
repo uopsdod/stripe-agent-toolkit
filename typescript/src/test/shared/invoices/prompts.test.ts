@@ -1,9 +1,8 @@
 import {
-  createInvoiceItemPrompt,
   createInvoicePrompt,
   listInvoicesPrompt,
-  listPaymentIntentsPrompt,
-} from '../../shared/prompts';
+  finalizeInvoicePrompt,
+} from '@/shared/invoices/prompts';
 
 describe('createInvoicePrompt', () => {
   it('should return the correct prompt', () => {
@@ -29,26 +28,9 @@ describe('listInvoicesPrompt', () => {
   });
 });
 
-describe('createInvoiceItemPrompt', () => {
+describe('finalizeInvoicePrompt', () => {
   it('should return the correct prompt', () => {
-    const prompt = createInvoiceItemPrompt();
-    expect(prompt).toContain('customer');
-  });
-
-  it('should return the correct prompt when a customer is specified', () => {
-    const prompt = createInvoiceItemPrompt({customer: 'cus_123'});
-    expect(prompt).not.toContain('customer');
-  });
-});
-
-describe('listPaymentIntentsPrompt', () => {
-  it('should return the correct prompt', () => {
-    const prompt = listPaymentIntentsPrompt();
-    expect(prompt).toContain('customer');
-  });
-
-  it('should return the correct prompt when a customer is specified', () => {
-    const prompt = listPaymentIntentsPrompt({customer: 'cus_123'});
-    expect(prompt).not.toContain('customer');
+    const prompt = finalizeInvoicePrompt();
+    expect(prompt).toContain('invoice');
   });
 });

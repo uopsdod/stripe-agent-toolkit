@@ -3,38 +3,47 @@ import {z} from 'zod';
 import {
   createCustomerPrompt,
   listCustomersPrompt,
+} from '@/shared/customers/prompts';
+import {
   createProductPrompt,
   listProductsPrompt,
-  createPricePrompt,
-  listPricesPrompt,
-  createPaymentLinkPrompt,
+} from '@/shared/products/prompts';
+import {createPricePrompt, listPricesPrompt} from '@/shared/prices/prompts';
+import {createPaymentLinkPrompt} from '@/shared/paymentLinks/prompts';
+import {
   createInvoicePrompt,
   listInvoicesPrompt,
-  createInvoiceItemPrompt,
   finalizeInvoicePrompt,
-  retrieveBalancePrompt,
-  createRefundPrompt,
-  searchDocumentationPrompt,
-  listPaymentIntentsPrompt,
-} from './prompts';
+} from '@/shared/invoices/prompts';
+import {createInvoiceItemPrompt} from '@/shared/invoiceItems/prompts';
+import {retrieveBalancePrompt} from '@/shared/balance/prompts';
+import {createRefundPrompt} from '@/shared/refunds/prompts';
+import {searchDocumentationPrompt} from '@/shared/documentation/prompts';
+import {listPaymentIntentsPrompt} from '@/shared/paymentIntents/prompts';
 
 import {
   createCustomerParameters,
   listCustomersParameters,
+} from '@/shared/customers/parameters';
+import {
   createProductParameters,
   listProductsParameters,
+} from '@/shared/products/parameters';
+import {
   createPriceParameters,
   listPricesParameters,
-  createPaymentLinkParameters,
+} from '@/shared/prices/parameters';
+import {createPaymentLinkParameters} from '@/shared/paymentLinks/parameters';
+import {
   createInvoiceParameters,
   listInvoicesParameters,
-  createInvoiceItemParameters,
   finalizeInvoiceParameters,
-  retrieveBalanceParameters,
-  createRefundParameters,
-  searchDocumentationParameters,
-  listPaymentIntentsParameters,
-} from './parameters';
+} from '@/shared/invoices/parameters';
+import {createInvoiceItemParameters} from '@/shared/invoiceItems/parameters';
+import {retrieveBalanceParameters} from '@/shared/balance/parameters';
+import {createRefundParameters} from '@/shared/refunds/parameters';
+import {searchDocumentationParameters} from '@/shared/documentation/parameters';
+import {listPaymentIntentsParameters} from '@/shared/paymentIntents/parameters';
 
 import type {Context} from './configuration';
 

@@ -6,6 +6,9 @@ const config: Config = {
   roots: ['<rootDir>/src'],
   testMatch: ['**/test/**/*.ts?(x)'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
 };
 
 export default config;
