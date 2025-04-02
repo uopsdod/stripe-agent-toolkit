@@ -97,6 +97,17 @@ test({
   ],
 });
 
+test({
+  prompt: "List all subscriptions",
+  fn: ({ toolCalls, messages }) => [
+    llmCriteriaMet(
+      messages,
+      "The message should include a list of subscriptions"
+    ),
+    expectToolCall(toolCalls, ["list_subscriptions"]),
+  ],
+});
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 test(async () => {

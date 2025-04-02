@@ -13,6 +13,7 @@ import {retrieveBalance} from '@/shared/balance/functions';
 import {createRefund} from '@/shared/refunds/functions';
 import {searchDocumentation} from '@/shared/documentation/functions';
 import {listPaymentIntents} from '@/shared/paymentIntents/functions';
+import {listSubscriptions} from '@/shared/subscriptions/functions';
 
 import type {Context} from './configuration';
 
@@ -125,7 +126,12 @@ class StripeAPI {
         await listPaymentIntents(this.stripe, this.context, arg)
       );
       return output;
-    } else if (method == 'search_documentation') {
+    } else if (method === 'list_subscriptions') {
+      const output = JSON.stringify(
+        await listSubscriptions(this.stripe, this.context, arg)
+      );
+      return output;
+    } else if (method === 'search_documentation') {
       const output = JSON.stringify(
         await searchDocumentation(this.stripe, this.context, arg)
       );
