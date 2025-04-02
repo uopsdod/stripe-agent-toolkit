@@ -23,6 +23,13 @@ describe('parseArgs function', () => {
       expect(options.tools).toEqual(['all']);
     });
 
+    it('should parse restricted api key correctly', () => {
+      const args = ['--api-key=rk_test_123', '--tools=all'];
+      const options = parseArgs(args);
+      expect(options.apiKey).toBe('rk_test_123');
+      expect(options.tools).toEqual(['all']);
+    });
+
     it('if api key set in env variable, should parse tools argument correctly', () => {
       process.env.STRIPE_SECRET_KEY = 'sk_test_123';
       const args = ['--tools=all'];
@@ -68,9 +75,11 @@ describe('parseArgs function', () => {
   });
 
   describe('error cases', () => {
-    it("should throw an error if api-key does not start with 'sk_'", () => {
+    it("should throw an error if api-key does not start with 'sk_' or 'rk_'", () => {
       const args = ['--api-key=test_123', '--tools=all'];
-      expect(() => parseArgs(args)).toThrow('API key must start with "sk_".');
+      expect(() => parseArgs(args)).toThrow(
+        'API key must start with "sk_" or "rk_".'
+      );
     });
 
     it('should throw an error if api-key is not provided', () => {

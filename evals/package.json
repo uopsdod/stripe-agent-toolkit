@@ -20,5 +20,8 @@
     "openai": "^4.86.1",
     "stripe": "^17.7.0",
     "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.3"
   }
 }
