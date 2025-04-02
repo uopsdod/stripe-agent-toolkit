@@ -36,6 +36,10 @@ export type Context = {
   // Customer is a Stripe Customer ID. If set, the integration will
   // make requests for this Customer.
   customer?: string;
+
+  // If set to 'modelcontextprotocol', the Stripe API calls will use a special
+  // header
+  mode?: 'modelcontextprotocol' | 'toolkit';
 };
 
 // Configuration provides various settings and options for the integration

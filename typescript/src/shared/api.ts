@@ -19,6 +19,9 @@ import {
 
 import type {Context} from './configuration';
 
+const TOOLKIT_HEADER = 'stripe-agent-toolkit-typescript';
+const MCP_HEADER = 'stripe-mcp';
+
 class StripeAPI {
   stripe: Stripe;
 
@@ -27,7 +30,10 @@ class StripeAPI {
   constructor(secretKey: string, context?: Context) {
     const stripeClient = new Stripe(secretKey, {
       appInfo: {
-        name: 'stripe-agent-toolkit-typescript',
+        name:
+          context?.mode === 'modelcontextprotocol'
+            ? MCP_HEADER
+            : TOOLKIT_HEADER,
         version: '0.5.3',
         url: 'https://github.com/stripe/agent-toolkit',
       },

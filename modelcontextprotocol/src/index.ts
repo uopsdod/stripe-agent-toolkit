@@ -9,7 +9,8 @@ type ToolkitConfig = {
     [product: string]: {[action: string]: boolean};
   };
   context?: {
-    account: string;
+    account?: string;
+    mode: 'modelcontextprotocol';
   };
 };
 
@@ -125,9 +126,13 @@ export async function main() {
     });
   }
 
+  configuration.context = {
+    mode: 'modelcontextprotocol',
+  };
+
   // Append stripe account to configuration if provided
   if (options.stripeAccount) {
-    configuration.context = {account: options.stripeAccount};
+    configuration.context.account = options.stripeAccount;
   }
 
   const server = new StripeAgentToolkit({
