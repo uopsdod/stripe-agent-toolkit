@@ -145,7 +145,10 @@ describe('main function', () => {
 
     expect(StripeAgentToolkit).toHaveBeenCalledWith({
       secretKey: 'sk_test_123',
-      configuration: {actions: ALL_ACTIONS},
+      configuration: {
+        actions: ALL_ACTIONS,
+        context: {mode: 'modelcontextprotocol'},
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();
@@ -175,6 +178,9 @@ describe('main function', () => {
             read: true,
           },
         },
+        context: {
+          mode: 'modelcontextprotocol',
+        },
       },
     });
 
@@ -194,7 +200,10 @@ describe('main function', () => {
 
     expect(StripeAgentToolkit).toHaveBeenCalledWith({
       secretKey: 'sk_test_123',
-      configuration: {actions: ALL_ACTIONS, context: {account: 'acct_123'}},
+      configuration: {
+        actions: ALL_ACTIONS,
+        context: {account: 'acct_123', mode: 'modelcontextprotocol'},
+      },
     });
 
     expect(StdioServerTransport).toHaveBeenCalled();

@@ -15,6 +15,10 @@ export const searchDocumentation = async (
       headers: {
         'Content-Type': 'application/json',
         'X-Requested-With': 'fetch',
+        'User-Agent':
+          context.mode === 'modelcontextprotocol'
+            ? 'stripe-mcp'
+            : 'stripe-agent-toolkit-typescript',
       },
       body: JSON.stringify(params),
     });
@@ -27,7 +31,6 @@ export const searchDocumentation = async (
     const data = await response.json();
     return data?.sources;
   } catch (error) {
-    console.error('Error searching documentation:', error);
     return 'Failed to search documentation';
   }
 };

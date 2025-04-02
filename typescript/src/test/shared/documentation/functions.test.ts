@@ -10,6 +10,12 @@ beforeEach(() => {
   stripe = new Stripe('fake-api-key');
 });
 
+const EXPECTED_HEADERS = {
+  'Content-Type': 'application/json',
+  'X-Requested-With': 'fetch',
+  'User-Agent': 'stripe-agent-toolkit-typescript',
+};
+
 describe('searchDocumentation', () => {
   it('should search for Stripe documentation and return sources', async () => {
     const question = 'How to create Stripe checkout session?';
@@ -44,10 +50,7 @@ describe('searchDocumentation', () => {
 
     expect(fetchMock).toHaveBeenCalledWith('https://ai.stripe.com/search', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'fetch',
-      },
+      headers: EXPECTED_HEADERS,
       body: JSON.stringify(requestBody),
     });
 
@@ -76,10 +79,7 @@ describe('searchDocumentation', () => {
 
     expect(fetchMock).toHaveBeenCalledWith('https://ai.stripe.com/search', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Requested-With': 'fetch',
-      },
+      headers: EXPECTED_HEADERS,
       body: JSON.stringify(requestBody),
     });
 
