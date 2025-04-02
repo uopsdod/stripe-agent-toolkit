@@ -20,6 +20,7 @@ import {retrieveBalancePrompt} from '@/shared/balance/prompts';
 import {createRefundPrompt} from '@/shared/refunds/prompts';
 import {searchDocumentationPrompt} from '@/shared/documentation/prompts';
 import {listPaymentIntentsPrompt} from '@/shared/paymentIntents/prompts';
+import {listSubscriptionsPrompt} from '@/shared/subscriptions/prompts';
 
 import {
   createCustomerParameters,
@@ -44,6 +45,7 @@ import {retrieveBalanceParameters} from '@/shared/balance/parameters';
 import {createRefundParameters} from '@/shared/refunds/parameters';
 import {searchDocumentationParameters} from '@/shared/documentation/parameters';
 import {listPaymentIntentsParameters} from '@/shared/paymentIntents/parameters';
+import {listSubscriptionsParameters} from '@/shared/subscriptions/parameters';
 
 import type {Context} from './configuration';
 
@@ -210,6 +212,17 @@ const tools = (context: Context): Tool[] => [
     parameters: listPaymentIntentsParameters(context),
     actions: {
       paymentIntents: {
+        read: true,
+      },
+    },
+  },
+  {
+    method: 'list_subscriptions',
+    name: 'List Subscriptions',
+    description: listSubscriptionsPrompt(context),
+    parameters: listSubscriptionsParameters(context),
+    actions: {
+      subscriptions: {
         read: true,
       },
     },
