@@ -31,7 +31,11 @@ export const listCustomers = async (
       context.account ? {stripeAccount: context.account} : undefined
     );
 
-    return customers.data.map((customer) => ({id: customer.id}));
+    return customers.data.map((customer) => ({
+      id: customer.id,
+      email: customer.email,
+      name: customer.name
+    }));
   } catch (error) {
     return 'Failed to list customers';
   }
